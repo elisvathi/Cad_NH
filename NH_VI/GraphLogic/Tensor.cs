@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CadTest3.GraphLogic
 {
-    class Tensor
+   public class Tensor
     {
     }
 }

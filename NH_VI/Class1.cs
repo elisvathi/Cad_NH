@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CadTest3.GraphLogic
+namespace NH_VI
 {
-    interface IData
+    public class Class1
     {
     }
 }

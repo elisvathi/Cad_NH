@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CadTest3.GraphLogic
+namespace PR_VI
 {
-    class GraphNode
+    public class Class1
     {
     }
 }

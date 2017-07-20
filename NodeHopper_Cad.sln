@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.26228.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodeHopper_CAD_2016", "CadTest3\NodeHopper_CAD_2016.csproj", "{542966A6-E8FC-4668-8B18-9C13DA6C5F92}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NH_VI", "NH_VI\NH_VI.csproj", "{124658CE-CE04-4049-A6FA-AE1F298DF9DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PR_VI", "PR_VI\PR_VI.csproj", "{D3FA2B24-E2D7-4E0F-B800-3BFFEF958318}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{542966A6-E8FC-4668-8B18-9C13DA6C5F92}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{542966A6-E8FC-4668-8B18-9C13DA6C5F92}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{542966A6-E8FC-4668-8B18-9C13DA6C5F92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{124658CE-CE04-4049-A6FA-AE1F298DF9DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{124658CE-CE04-4049-A6FA-AE1F298DF9DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{124658CE-CE04-4049-A6FA-AE1F298DF9DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{124658CE-CE04-4049-A6FA-AE1F298DF9DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3FA2B24-E2D7-4E0F-B800-3BFFEF958318}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3FA2B24-E2D7-4E0F-B800-3BFFEF958318}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3FA2B24-E2D7-4E0F-B800-3BFFEF958318}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3FA2B24-E2D7-4E0F-B800-3BFFEF958318}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
