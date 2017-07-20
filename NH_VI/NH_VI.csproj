@@ -41,16 +41,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
-    <Compile Include="Geometry\ICurve.cs" />
-    <Compile Include="Geometry\NumberConversions.cs" />
-    <Compile Include="Geometry\PCurve.cs" />
-    <Compile Include="Geometry\PLine.cs" />
-    <Compile Include="Geometry\PointCollectionGeometry.cs" />
+    <Compile Include="DataTypes\Numeric\PNumber.cs" />
     <Compile Include="Geometry\PVector.cs" />
+    <Compile Include="GraphLogic\AbstractData.cs" />
+    <Compile Include="GraphLogic\DataTree.cs" />
     <Compile Include="GraphLogic\GraphNode.cs" />
     <Compile Include="GraphLogic\IData.cs" />
-    <Compile Include="GraphLogic\Tensor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DataTypes\Abstract\" />
+    <Folder Include="DataTypes\Geometric\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

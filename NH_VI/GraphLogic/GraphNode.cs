@@ -8,5 +8,9 @@ namespace CadTest3.GraphLogic
 {
    public class GraphNode
     {
+        List<GraphNode> InputNodes { get; set; }
+        List<GraphNode> OutputNodes { get; set; }
+        List<List<Type>> PossibleInputTypes { get; set; }
+        List<List<Type>> FinalOutputTypes { get; set; }
     }
 }
