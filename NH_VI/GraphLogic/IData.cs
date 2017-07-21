@@ -8,12 +8,15 @@ namespace CadTest3.GraphLogic
 {
   public  interface IData
     {
-        DataTree Parent { get;  }
+        DataTree Parent { get; set; }
         void AddTo(DataTree t);
-        void AddTo(DataTree t, int index);
+        void AddTo(int index, DataTree t);
         IData RemoveFromParent();
         DataTree Encapsulate();
         IData Copy();
         int Index { get; }
+        string DataDescription { get; }
+        int TreeLevel { get; }
+        void Replace(IData dat);
     }
 }

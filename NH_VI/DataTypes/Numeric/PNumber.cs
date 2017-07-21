@@ -17,5 +17,9 @@ namespace NH_VI.DataTypes.Numeric
         {
             return new PNumber(Value);
         }
+        public override string ToString()
+        {
+            return "Number: " + Value;
+        }
     }
 }

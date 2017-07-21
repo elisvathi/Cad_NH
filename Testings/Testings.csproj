@@ -4,16 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{124658CE-CE04-4049-A6FA-AE1F298DF9DF}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NH_VI</RootNamespace>
-    <AssemblyName>NH_VI</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <ProjectGuid>{107E058F-828A-42D5-9E86-2F86658787EA}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Testings</RootNamespace>
+    <AssemblyName>Testings</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -41,22 +42,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
-    <Compile Include="DataTypes\Numeric\PNumber.cs" />
-    <Compile Include="Geometry\PVector.cs" />
-    <Compile Include="GraphLogic\AbstractData.cs" />
-    <Compile Include="GraphLogic\DataTree.cs" />
-    <Compile Include="GraphLogic\GraphNode.cs" />
-    <Compile Include="GraphLogic\IData.cs" />
-    <Compile Include="GraphLogic\Operators\AbstractOperator.cs" />
-    <Compile Include="GraphLogic\Operators\AddOperator.cs" />
-    <Compile Include="GraphLogic\Operators\IOperator.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DataTypes\Abstract\" />
-    <Folder Include="DataTypes\Boolean\" />
-    <Folder Include="DataTypes\Geometric\" />
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NH_VI\NH_VI.csproj">
+      <Project>{124658ce-ce04-4049-a6fa-ae1f298df9df}</Project>
+      <Name>NH_VI</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
