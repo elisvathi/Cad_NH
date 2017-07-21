@@ -28,9 +28,13 @@ namespace Testings
 
             var t2 = new DataTree();
             t2.AddElement(new PNumber(4));
-            //var temp = new DataTree();
-            //temp.AddElement(new PNumber(15));
-            //t2.AddElement(temp);
+            var temp = new DataTree();
+
+            temp.AddElement(new PNumber(15));
+            temp.AddElement(new PNumber(72));
+            var temp2 = new PNumber(85);
+            temp.AddElement(temp2);
+            t2.AddElement(temp);
 
             t2.AddElement(new PNumber(5));
             t2.AddElement(new PNumber(6));
@@ -43,6 +47,12 @@ namespace Testings
 
             Console.WriteLine(f1.DataDescription);
             Console.WriteLine(f2.DataDescription);
+            var a = temp2.Path;
+            Console.WriteLine();
+            for(int i =0;i< a.Length; i++)
+            {
+                Console.Write(" " + a[i]);
+            }
         }
     }
 }

@@ -18,5 +18,6 @@ namespace CadTest3.GraphLogic
         string DataDescription { get; }
         int TreeLevel { get; }
         void Replace(IData dat);
+        int[] Path { get; }
     }
 }

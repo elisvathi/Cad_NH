@@ -27,7 +27,25 @@ namespace NH_VI.GraphLogic
 
         public int TreeLevel => Parent == null ? 0 : Parent.TreeLevel + 1;
 
-
+        public int[] Path
+        {
+            get
+            {
+                var retVal = new List<int>();
+                if (Parent == null)
+                {
+                    return retVal.ToArray();
+                }
+                else
+                {
+                   
+                    retVal = Parent.Path.ToList();
+                    retVal.Add(Index);
+                }
+                return retVal.ToArray();
+               
+            }
+        }
 
         public void AddTo(DataTree t)
         {
