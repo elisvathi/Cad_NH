@@ -3,8 +3,6 @@ using NH_VI.GraphLogic.Operators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CadTest3.GraphLogic
 {
@@ -15,20 +13,24 @@ namespace CadTest3.GraphLogic
         Tree,
         Empty
     }
+
     public class DataTree : AbstractData
     {
         public List<IData> Data { get; }
-        public Type DataType { get; private set; }
+        public Type DataType { get; set; }
         public Type NodeType => IsEmpty ? null : Data[0].GetType();
+
         public DataTree()
         {
             Data = new List<IData>();
             DataType = null;
         }
+
         public bool IsEmpty => Count == 0;
 
         public int Count => Data.Count;
-        public DataTreeType TensorConfigType
+
+        public DataTreeType TreeConfigType
         {
             get
             {
@@ -53,14 +55,17 @@ namespace CadTest3.GraphLogic
                 }
             }
         }
-        public bool IsList => TensorConfigType == DataTreeType.List;
-        public bool IsTree => TensorConfigType == DataTreeType.Tree;
-        public bool IsSingle => TensorConfigType == DataTreeType.Single;
+
+        public bool IsList => TreeConfigType == DataTreeType.List;
+        public bool IsTree => TreeConfigType == DataTreeType.Tree;
+        public bool IsSingle => TreeConfigType == DataTreeType.Single;
+
         public IData this[int key]
         {
             get { return Data[key]; }
             set { Data[key] = value; }
         }
+
         public void AddElement(IData t)
         {
             if (IsEmpty)
@@ -75,14 +80,14 @@ namespace CadTest3.GraphLogic
                     var inTens = t as DataTree;
                     if (NodeType == typeof(DataTree))
                     {
-                        if (inTens.DataType == DataType)
+                        if (inTens.DataType == DataType || DataType == null)
                         {
                             (t as DataTree).AddTo(this);
                         }
                     }
                     else
                     {
-                        if (inTens.DataType == DataType)
+                        if (inTens.DataType == DataType || DataType == null)
                         {
                             GraftTree();
                             inTens.AddTo(this);
@@ -93,7 +98,7 @@ namespace CadTest3.GraphLogic
                 {
                     var a = t.GetType();
                     var b = DataType;
-                    if (t.GetType() == DataType)
+                    if (t.GetType() == DataType || DataType == null)
                     {
                         if (NodeType == typeof(DataTree))
                         {
@@ -105,32 +110,41 @@ namespace CadTest3.GraphLogic
                             t.AddTo(this);
                         }
                     }
-
                 }
             }
         }
+
         public void RemoveElement(IData d)
         {
             d.RemoveFromParent();
         }
+
         private void ReplaceBranch(IData newBranch, int i)
         {
             Data[i].Replace(newBranch);
         }
+
         public void RemoveElement(int index)
         {
             Data[index].RemoveFromParent();
         }
+
         public override IData Copy()
         {
             var retVal = new DataTree();
             foreach (var t in Data)
             {
-                t.Copy().AddTo(retVal);
+                if (t is DataTree) { (t as DataTree).Copy().AddTo(retVal); }
+                else
+                {
+                    t.Copy().AddTo(retVal);
+                }
             }
+            retVal.Parent = Parent;
             retVal.DataType = DataType;
             return retVal;
         }
+
         public override string ToString()
         {
             if (IsTree)
@@ -150,6 +164,7 @@ namespace CadTest3.GraphLogic
                 return "Empty";
             }
         }
+
         public override string DataDescription
         {
             get
@@ -163,7 +178,6 @@ namespace CadTest3.GraphLogic
             }
         }
 
-    
         private IData GetByPath(int[] path)
         {
             if (ContainsPath(path))
@@ -185,8 +199,6 @@ namespace CadTest3.GraphLogic
 
         public static void ConformTrees(DataTree t1, DataTree t2, DataGroupingModes mode, out DataTree firstTree, out DataTree secondTree, int primary = 0)
         {
-
-
             int ind = -1;
 
             if (mode == DataGroupingModes.Shortest)
@@ -199,7 +211,6 @@ namespace CadTest3.GraphLogic
             }
             else if (mode == DataGroupingModes.Primary)
             {
-
                 firstTree = primary == 0 ? t1 : t1.ConformTree(t2);
                 secondTree = primary == 0 ? t2.ConformTree(t1) : t2;
                 return;
@@ -207,7 +218,6 @@ namespace CadTest3.GraphLogic
 
             if (ind != -1)
             {
-
                 if (ind == 0) { firstTree = t1; secondTree = t2.ConformList(t1); } else { firstTree = t1.ConformList(t2); secondTree = t2; }
                 bool test = ind == 0 ? firstTree.IsTree : secondTree.IsTree;
                 if (test)
@@ -225,8 +235,85 @@ namespace CadTest3.GraphLogic
             {
                 CrossRefTree(t1, t2, out firstTree, out secondTree);
             }
+        }
 
+        public int NumberChildEndings()
+        {
+            if (!IsTree) { return Count; }
+            else
+            {
+                int sum = 0;
+                foreach (var d in Data)
+                {
+                    if (d is DataTree)
+                    {
+                        sum += (d as DataTree).NumberChildEndings();
+                    }
+                }
+                return sum;
+            }
+        }
 
+        public IEnumerable<IData> GetChildIterator()
+        {
+            if (!IsTree)
+            {
+                foreach (var d in Data)
+                {
+                    yield return d;
+                }
+            }
+            else
+            {
+                foreach (var d in Data)
+                {
+                    if (d is DataTree)
+                    {
+                        foreach (var t in (d as DataTree).GetChildIterator())
+                        {
+                            yield return t;
+                        }
+                    }
+                }
+            }
+        }
+        public IEnumerable<DataTree> GetBranchesWithData()
+        {
+            if (!IsTree)
+            {
+                yield return this;
+            }
+            else
+            {
+                foreach (var d in Data)
+                {
+                    if (d is DataTree)
+                    {
+                        foreach (var t in (d as DataTree).GetBranchesWithData())
+                        {
+                            yield return t;
+                        }
+                    }
+                }
+            }
+        }
+
+        public DataTree GetEmptyTree()
+        {
+            var retVal = Copy() as DataTree;
+            foreach (var v in retVal.GetBranchesWithData())
+            {
+                v.EmptyBranch();
+            }
+            return retVal;
+        }
+        public void EmptyBranch()
+        {
+            var c = Count;
+            for (int i = 0; i < c; i++)
+            {
+                Data.Last().RemoveFromParent();
+            }
         }
 
         private void GraftTree()
@@ -236,10 +323,12 @@ namespace CadTest3.GraphLogic
                 Data[i].Encapsulate();
             }
         }
+
         private DataTree ConformList(DataTree t)
         {
             return RequestNewSizeRepeatLast(t.Count);
         }
+
         private DataTree ConformTree(DataTree t)
         {
             var retVal = ConformList(t);
@@ -253,6 +342,7 @@ namespace CadTest3.GraphLogic
             }
             return retVal;
         }
+
         private static void CrossRefTree(DataTree t1, DataTree t2, out DataTree first, out DataTree second)
         {
             first = t1.RequestCrossRefRepetition(t2.Count, true);
@@ -270,16 +360,15 @@ namespace CadTest3.GraphLogic
                 }
             }
         }
+
         private DataTree RequestCrossRefRepetition(int mult, bool first)
         {
             DataTree retVal = new DataTree();
 
             if (!first)
             {
-               
                 for (int i = 0; i < mult; i++)
                 {
-                    
                     for (int j = 0; j < Data.Count; j++)
                     {
                         retVal.AddElement(Data[j].Copy());
@@ -288,8 +377,6 @@ namespace CadTest3.GraphLogic
             }
             else
             {
-               
-
                 for (int i = 0; i < Data.Count; i++)
                 {
                     for (int j = 0; j < mult; j++)
@@ -297,10 +384,10 @@ namespace CadTest3.GraphLogic
                         retVal.AddElement(Data[i].Copy());
                     }
                 }
-
             }
             return retVal;
         }
+
         private DataTree RequestNewSizeRepeatLast(int size)
         {
             var retVal = Copy() as DataTree;
@@ -316,19 +403,17 @@ namespace CadTest3.GraphLogic
             {
                 for (int i = size; i < Count; i++)
                 {
-
                     retVal.RemoveElement(retVal.Data.Last());
-
                 }
             }
             return retVal;
         }
+
         private int TreeDepth()
         {
             if (!IsTree) { return 1; }
             else
             {
-
                 List<int> depths = new List<int>();
                 for (int i = 0; i < Count; i++)
                 {
@@ -337,6 +422,7 @@ namespace CadTest3.GraphLogic
                 return MaxInt(depths);
             }
         }
+
         private int MaxInt(List<int> depths)
         {
             int max = depths[0];
@@ -346,6 +432,7 @@ namespace CadTest3.GraphLogic
             }
             return max;
         }
+
         private bool ContainsPath(int[] path)
         {
             var test = path[0] >= 0 && path[0] < Data.Count;
@@ -365,6 +452,5 @@ namespace CadTest3.GraphLogic
             l.RemoveAt(0);
             return l.ToArray();
         }
-
     }
 }

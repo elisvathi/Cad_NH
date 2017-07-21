@@ -12,8 +12,31 @@ namespace Testings
     {
         static void Main(string[] args)
         {
-            TestimNumriElementeve();
+            //TestimNumriElementeve();
+            TestEmptyTree();
             Console.Read();
+        }
+
+
+        static void TestEmptyTree()
+        {
+            var t = new DataTree();
+            t.AddElement(new PNumber(4));
+            t.AddElement(new PNumber(3));
+            t.AddElement(new PNumber(4));
+            var t2 = new DataTree();
+            t2.AddElement(new PNumber(0));
+            var t3 = new DataTree();
+            t3.AddElement(new PNumber(34));
+            t3.AddElement(new PNumber(33));
+            t3.AddElement(new PNumber(23));
+            t3.AddElement(new PNumber(83));
+            t2.AddElement(t3);
+            t.AddElement(t2);
+            Console.WriteLine(t.DataDescription);
+            var temp = t.GetEmptyTree();
+            Console.WriteLine(temp.DataDescription);
+            Console.WriteLine(temp.NumberChildEndings());
         }
         static void TestimNumriElementeve()
         {
@@ -47,12 +70,12 @@ namespace Testings
 
             Console.WriteLine(f1.DataDescription);
             Console.WriteLine(f2.DataDescription);
-            var a = temp2.Path;
-            Console.WriteLine();
-            for(int i =0;i< a.Length; i++)
-            {
-                Console.Write(" " + a[i]);
-            }
+            Console.WriteLine("");
+            Console.WriteLine("Nr: "+ f2.NumberChildEndings());
+
+            var a = f2.GetEmptyTree();
+            Console.WriteLine(a.DataDescription);
+
         }
     }
 }
