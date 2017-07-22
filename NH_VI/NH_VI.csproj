@@ -42,20 +42,37 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="DataTypes\Boolean\PBoolean.cs" />
     <Compile Include="DataTypes\Numeric\PNumber.cs" />
     <Compile Include="Geometry\PVector.cs" />
     <Compile Include="GraphLogic\AbstractData.cs" />
     <Compile Include="GraphLogic\DataTree.cs" />
     <Compile Include="GraphLogic\GraphNode.cs" />
     <Compile Include="GraphLogic\IData.cs" />
+    <Compile Include="GraphLogic\Nodes\BasicNode.cs" />
+    <Compile Include="GraphLogic\Nodes\Connector.cs" />
+    <Compile Include="GraphLogic\Nodes\INode.cs" />
+    <Compile Include="GraphLogic\Nodes\InputSocket.cs" />
+    <Compile Include="GraphLogic\Nodes\ISocket.cs" />
+    <Compile Include="GraphLogic\Nodes\OutputSocket.cs" />
+    <Compile Include="GraphLogic\Operators\BooleanOperators\BooleanOperator.cs" />
+    <Compile Include="GraphLogic\Operators\BooleanOperators\BooleanOps.cs" />
+    <Compile Include="GraphLogic\Operators\NumberOperators\AbstractNumberOperator.cs" />
     <Compile Include="GraphLogic\Operators\AbstractOperator.cs" />
-    <Compile Include="GraphLogic\Operators\AddOperator.cs" />
+    <Compile Include="GraphLogic\Operators\NumberOperators\AddOperator.cs" />
+    <Compile Include="GraphLogic\Operators\NumberOperators\DivideOperator.cs" />
     <Compile Include="GraphLogic\Operators\IOperator.cs" />
+    <Compile Include="GraphLogic\Operators\NumberOperators\EqualityOperator.cs" />
+    <Compile Include="GraphLogic\Operators\NumberOperators\GreaterThanEquals.cs" />
+    <Compile Include="GraphLogic\Operators\NumberOperators\GreaterThanOperator.cs" />
+    <Compile Include="GraphLogic\Operators\NumberOperators\MultiplyOperator.cs" />
+    <Compile Include="GraphLogic\Operators\NumberOperators\SmallerThanEquals.cs" />
+    <Compile Include="GraphLogic\Operators\NumberOperators\SmallerThanOperator.cs" />
+    <Compile Include="GraphLogic\Operators\NumberOperators\SubtractOperator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DataTypes\Abstract\" />
-    <Folder Include="DataTypes\Boolean\" />
     <Folder Include="DataTypes\Geometric\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

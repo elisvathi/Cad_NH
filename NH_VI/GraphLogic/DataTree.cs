@@ -178,8 +178,9 @@ namespace CadTest3.GraphLogic
             }
         }
 
-        private IData GetByPath(int[] path)
+        public IData GetByPath(int[] path)
         {
+            if (path.Length == 0) { return this; }
             if (ContainsPath(path))
             {
                 if (path.Length > 1)
@@ -234,6 +235,33 @@ namespace CadTest3.GraphLogic
             else
             {
                 CrossRefTree(t1, t2, out firstTree, out secondTree);
+            }
+        }
+
+        public static void ConformTrees(List<DataTree> trees, out List<DataTree> output, DataGroupingModes mode, int primaryIndex = 0)
+        {
+            output = new List<DataTree>();
+            if (mode == DataGroupingModes.Primary)
+            {
+                output.Add(trees[primaryIndex]);
+                for (int i = 0; i < trees.Count; i++)
+                {
+                    if (i != primaryIndex)
+                    {
+                        ConformTrees(trees[primaryIndex], trees[i], mode, out DataTree f1, out DataTree f2, 0);
+                        //output.Add(f1);
+                        output.Add(f2);
+                    }
+                }
+            }
+            else if (mode == DataGroupingModes.CrossReference)
+            {
+                CrossRefTree(trees, out output);
+
+            }
+            else
+            {
+                ConformListOfTreesLongestShortest(trees, out output, mode);
             }
         }
 
@@ -342,11 +370,73 @@ namespace CadTest3.GraphLogic
             }
             return retVal;
         }
+        private static void ConformListOfTreesLongestShortest(List<DataTree> input, out List<DataTree> output, DataGroupingModes mode)
+        {
+            output = new List<DataTree>();
+            int maxCount = -1;
+            int maxIndex = -1;
+            int minCount = int.MaxValue;
+            int minIndex = -1;
+            for (int i = 0; i < input.Count; i++) { if (input[i].Count > maxCount) { maxCount = input[i].Count; maxIndex = i; }; if (input[i].Count < minCount) { minCount = input[i].Count; minIndex = i; } }
+            bool test = false;
+            foreach (var l in input)
+            {
+                output.Add(l.RequestNewSizeRepeatLast(mode == DataGroupingModes.Longest ? maxCount : minCount));
+                test |= l.IsTree;
+            }
+            if (test)
+            {
+                foreach (var l in output) { if (!(l.IsTree)) { l.GraftTree(); } }
+
+
+                for (int i = 0; i < output[0].Count; i++)
+                {
+                    var newInput = new List<DataTree>();
+                    foreach(var l in output)
+                    {
+                        newInput.Add(l.Data[i] as DataTree);
+                    }
+                    ConformListOfTreesLongestShortest(newInput, out List<DataTree> newOutput, mode);
+                    for(int j = 0;j< newOutput.Count; j++)
+                    {
+                        output[j].ReplaceBranch(newOutput[j], i);
+                    }
+                }
+
+            }
+
+
+        }
+        private static void CrossRefTree(List<DataTree> input, out List<DataTree> output)
+        {
+            output = new List<DataTree>();
+            int counts = 1;
+            foreach (var l in input) { counts *= l.Count > 0 ? l.Count : 1; }
+            foreach (var l in input)
+            {
+                int repCount = 1;
+                for (int i = input.IndexOf(l) + 1; i < input.Count; i++) { repCount *= input[i].Count; }
+                output.Add(l.RequestCrossRefRepetition(counts / (l.Count > 0 ? l.Count : 1), repCount));
+            }
+            var test = false;
+            foreach (var l in output) { if (l.IsTree) { test = true; } }
+            if (test)
+            {
+                foreach (var e in output) { if (!(e.IsTree)) { e.GraftTree(); } }
+                for (int i = 0; i < output[0].Count; i++)
+                {
+                    var newInput = new List<DataTree>();
+                    foreach (var l in output) { newInput.Add(l.Data[i] as DataTree); }
+                    CrossRefTree(newInput, out List<DataTree> newOutput);
+                    for (int j = 0; j < output.Count; j++) { output[j].ReplaceBranch(newOutput[j], i); }
+                }
+            }
+        }
 
         private static void CrossRefTree(DataTree t1, DataTree t2, out DataTree first, out DataTree second)
         {
-            first = t1.RequestCrossRefRepetition(t2.Count, true);
-            second = t2.RequestCrossRefRepetition(t1.Count, false);
+            first = t1.RequestCrossRefRepetition(t2.Count, t2.Count);
+            second = t2.RequestCrossRefRepetition(t1.Count, 1);
 
             if (first.IsTree || second.IsTree)
             {
@@ -354,37 +444,33 @@ namespace CadTest3.GraphLogic
                 if (!second.IsTree) { second.GraftTree(); }
                 for (int i = 0; i < first.Count; i++)
                 {
-                    int val = (first.Data[i] as DataTree).Count * (second.Data[i] as DataTree).Count;
-                    first.Data[i].Replace((first.Data[i] as DataTree).RequestCrossRefRepetition(val, true));
-                    second.Data[i].Replace((second.Data[i] as DataTree).RequestCrossRefRepetition(val, false));
+                    //int val = (first.Data[i] as DataTree).Count * (second.Data[i] as DataTree).Count;
+                    //int c1 = (first.Data[i])
+                    //first.Data[i].Replace((first.Data[i] as DataTree).RequestCrossRefRepetition(val, true));
+                    //second.Data[i].Replace((second.Data[i] as DataTree).RequestCrossRefRepetition(val, false));
+                    CrossRefTree(first.Data[i] as DataTree, second.Data[i] as DataTree, out DataTree f1, out DataTree f2);
+                    first.ReplaceBranch(f1, i);
+                    second.ReplaceBranch(f2, i);
                 }
             }
         }
 
-        private DataTree RequestCrossRefRepetition(int mult, bool first)
+        private DataTree RequestCrossRefRepetition(int mult, int reps)
         {
             DataTree retVal = new DataTree();
 
-            if (!first)
+
+            for (int i = 0; i < mult / reps; i++)
             {
-                for (int i = 0; i < mult; i++)
+                for (int j = 0; j < Data.Count; j++)
                 {
-                    for (int j = 0; j < Data.Count; j++)
+                    for (int k = 0; k < reps; k++)
                     {
                         retVal.AddElement(Data[j].Copy());
                     }
                 }
             }
-            else
-            {
-                for (int i = 0; i < Data.Count; i++)
-                {
-                    for (int j = 0; j < mult; j++)
-                    {
-                        retVal.AddElement(Data[i].Copy());
-                    }
-                }
-            }
+
             return retVal;
         }
 
@@ -435,6 +521,7 @@ namespace CadTest3.GraphLogic
 
         private bool ContainsPath(int[] path)
         {
+            if (path.Length == 0) { return true; }
             var test = path[0] >= 0 && path[0] < Data.Count;
             if (!test) { return false; }
             var test2 = true;
