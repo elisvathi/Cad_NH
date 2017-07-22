@@ -16,8 +16,8 @@ namespace NH_VI.GraphLogic.Operators
     }
     public abstract class AbstractOperator : IOperator
     {
-        public abstract List<List<Type>> PossibleTypes { get; }
-
+        public abstract List<Type> InputTypes { get; }
+        public abstract List<Type> OutputTypes { get; }
 
         public abstract bool TreeOperator { get; }
 
@@ -122,14 +122,14 @@ namespace NH_VI.GraphLogic.Operators
 
         protected abstract List<IData> OperateSimple(List<IData> dat);
 
-        protected bool CheckData(List<IData> dat)
+        protected virtual bool CheckData(List<IData> dat)
         {
             var test1 = dat.Count >= MinimumNumberOfSockets && dat.Count <= MaxNumberOfSockets;
             var test2 = true;
             for (int i = 0; i < dat.Count; i++)
             {
-                var tempTest = PossibleTypes[i].Contains(dat[i].GetType());
-                var tempTest2 = dat[i] is DataTree && PossibleTypes[i].Contains((dat[i] as DataTree).DataType);
+                var tempTest = InputTypes[i] ==dat[i].GetType();
+                var tempTest2 = dat[i] is DataTree && InputTypes[i] ==(dat[i] as DataTree).DataType;
                 var tempTest3 = TreeOperator && dat[i] is DataTree;
                 var finalTest = tempTest || tempTest2 || tempTest3;
                 if (!finalTest) { test2 = false; }
@@ -141,5 +141,6 @@ namespace NH_VI.GraphLogic.Operators
         public abstract int MaxNumberOfSockets { get; set; }
         public abstract int MinimumNumberOfSockets { get; set; }
         public abstract int NumberOfOutputs { get; set; }
+       
     }
 }

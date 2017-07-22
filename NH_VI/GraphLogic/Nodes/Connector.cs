@@ -16,6 +16,10 @@ namespace NH_VI.GraphLogic.Nodes
         public OutputSocket Starting { get => starting; }
         public event DataChanged OnDataChanged;
 
+        public Connector(OutputSocket starting, InputSocket ending, bool replaceEnding = true)
+        {
+            Connect(starting, ending, replaceEnding);
+        }
 
         void Connect(OutputSocket input, InputSocket output, bool replaceEnding = true)
         {
@@ -37,6 +41,8 @@ namespace NH_VI.GraphLogic.Nodes
         }
         public void Disconnect()
         {
+            starting.Connectors.Remove(this);
+            ending.Connectors.Remove(this);
             OnDataChanged -= ending.UpdateData;
             starting.OnDataChanged -= UpdateData;
         }

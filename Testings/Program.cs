@@ -1,5 +1,7 @@
 ﻿using CadTest3.GraphLogic;
+using NH_VI.DataTypes.Abstract;
 using NH_VI.DataTypes.Numeric;
+using NH_VI.GraphLogic.Nodes.NumberNode;
 using NH_VI.GraphLogic.Operators;
 using NH_VI.GraphLogic.Operators.NumberOperators;
 using System;
@@ -17,8 +19,9 @@ namespace Testings
             //TestimNumriElementeve();
             //TestEmptyTree();
             //CrossRefTree();
-            OperatorTest();
+            //OperatorTest();
             //PathTest();
+            GraphTest();
             Console.Read();
         }
 
@@ -90,7 +93,6 @@ namespace Testings
             }
 
         }
-
         static void PrintPath(int[] p)
         {
             Console.WriteLine();
@@ -99,12 +101,10 @@ namespace Testings
                 Console.Write(" " + v);
             }
         }
-
         static void Print(IData d)
         {
             Console.WriteLine(d.DataDescription);
         }
-
         static void TestEmptyTree()
         {
             var t = new DataTree();
@@ -163,6 +163,26 @@ namespace Testings
             var a = f2.GetEmptyTree();
             Console.WriteLine(a.DataDescription);
 
+        }
+
+        public static void GraphTest()
+        {
+            var n = new AddNode();
+            var n2 = new NumberInputNode();
+            var numer = 152.2;
+            var exNum = new ExternalNumber(numer);
+            var exData = new ExternalData(exNum);
+            n2.ConnectToData(new List<ExternalData>() { exData });
+
+            Print(n2.OutputSockets[0].Data);
+        }
+        static void Print(string s)
+        {
+            Console.WriteLine(s);
+        }
+        static void Print(double d)
+        {
+            Print(d + "");
         }
     }
 }

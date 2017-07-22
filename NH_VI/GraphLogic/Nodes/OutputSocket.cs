@@ -9,11 +9,20 @@ namespace NH_VI.GraphLogic.Nodes
 {
     public class OutputSocket : ISocket
     {
-        public OutputSocket(Type t)
+        private INode _parentNode;
+        public OutputSocket(Type t, INode n)
         {
             _socketType = t;
+            _parentNode = n;
             Connectors = new List<Connector>();
+            _parentNode.OnNodeDataChanged += NodeChanged;
         }
+
+        private void NodeChanged(List<IData> dat)
+        {
+            OnDataChanged?.Invoke(dat[Index]);
+        }
+        public int Index => _parentNode.OutputSockets.IndexOf(this);
         private IData data;
         private Type _socketType;
 
@@ -21,10 +30,26 @@ namespace NH_VI.GraphLogic.Nodes
 
         public Type SocketType { get => _socketType; }
 
-        public INode ParentNode => throw new NotImplementedException();
+        public INode ParentNode => _parentNode;
 
         public List<Connector> Connectors { get; set; }
 
         public event DataChanged OnDataChanged;
+        public void Disconnect(Connector c)
+        {
+            c.Disconnect();
+        }
+        public void Disconnect(int n)
+        {
+            if (n > 0 && n < Connectors.Count) { Connectors[n].Disconnect(); }
+        }
+        public void Disconnect(InputSocket s)
+        {
+            var a = Connectors.FindAll((c) => c.Ending == s);
+            foreach (var c in a)
+            {
+                c.Disconnect();
+            }
+        }
     }
 }

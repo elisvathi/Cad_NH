@@ -42,6 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="DataTypes\Abstract\ExternalData.cs" />
+    <Compile Include="DataTypes\Abstract\ExternalNumber.cs" />
+    <Compile Include="DataTypes\Abstract\ICopyable.cs" />
     <Compile Include="DataTypes\Boolean\PBoolean.cs" />
     <Compile Include="DataTypes\Numeric\PNumber.cs" />
     <Compile Include="Geometry\PVector.cs" />
@@ -49,14 +52,20 @@
     <Compile Include="GraphLogic\DataTree.cs" />
     <Compile Include="GraphLogic\GraphNode.cs" />
     <Compile Include="GraphLogic\IData.cs" />
-    <Compile Include="GraphLogic\Nodes\BasicNode.cs" />
+    <Compile Include="GraphLogic\Nodes\AbstractExternalNode.cs" />
+    <Compile Include="GraphLogic\Nodes\AbstractNode.cs" />
     <Compile Include="GraphLogic\Nodes\Connector.cs" />
+    <Compile Include="GraphLogic\Nodes\ExternalSocket.cs" />
     <Compile Include="GraphLogic\Nodes\INode.cs" />
     <Compile Include="GraphLogic\Nodes\InputSocket.cs" />
     <Compile Include="GraphLogic\Nodes\ISocket.cs" />
+    <Compile Include="GraphLogic\Nodes\NumberNode\AddNode.cs" />
+    <Compile Include="GraphLogic\Nodes\NumberNode\NumberInputNode.cs" />
     <Compile Include="GraphLogic\Nodes\OutputSocket.cs" />
     <Compile Include="GraphLogic\Operators\BooleanOperators\BooleanOperator.cs" />
     <Compile Include="GraphLogic\Operators\BooleanOperators\BooleanOps.cs" />
+    <Compile Include="GraphLogic\Operators\ExternalOperator.cs" />
+    <Compile Include="GraphLogic\Operators\ExternalOperators\ExternalNumberOperator.cs" />
     <Compile Include="GraphLogic\Operators\NumberOperators\AbstractNumberOperator.cs" />
     <Compile Include="GraphLogic\Operators\AbstractOperator.cs" />
     <Compile Include="GraphLogic\Operators\NumberOperators\AddOperator.cs" />
@@ -72,7 +81,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DataTypes\Abstract\" />
     <Folder Include="DataTypes\Geometric\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

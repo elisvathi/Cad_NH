@@ -33,5 +33,25 @@ namespace NH_VI.GraphLogic.Nodes
         {
             OnDataChanged?.Invoke(data);
         }
+        public void ConnectTo(OutputSocket s)
+        {
+            var v = new Connector(s, this);
+        }
+        public void Disconnect(Connector c)
+        {
+            c.Disconnect();
+        }
+        public void Disconnect(int n)
+        {
+            if(n>0&& n < Connectors.Count) { Connectors[n].Disconnect(); }
+        }
+        public void Disconnect(OutputSocket s)
+        {
+            var a = Connectors.FindAll((c) => c.Starting == s);
+            foreach( var c in a)
+            {
+                c.Disconnect();
+            }
+        }
     }
 }

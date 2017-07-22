@@ -11,8 +11,8 @@ namespace NH_VI.GraphLogic.Nodes
     public delegate void NodeDataChanged(List<IData> dat);
    public interface INode
     {
-        List<ISocket> InputSockets { get; }
-        List<ISocket> OutputSockets { get; }
+        List<InputSocket> InputSockets { get; }
+        List<OutputSocket> OutputSockets { get; }
         IOperator Operator { get; }
        event NodeDataChanged OnNodeDataChanged;
     }

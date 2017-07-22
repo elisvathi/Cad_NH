@@ -14,8 +14,8 @@ namespace NH_VI.GraphLogic.Operators
     }
     public abstract class AbstractNumberOperator : AbstractOperator
     {
-        public override List<List<Type>> PossibleTypes => new List<List<Type>> { new List<Type>() { typeof(PNumber) }, new List<Type>() { typeof(PNumber) } };
-
+        public override List<Type> InputTypes => new List<Type> { typeof(PNumber), typeof(PNumber) };
+        public override List<Type> OutputTypes => new List<Type> { typeof(PNumber) };
         public override bool TreeOperator => false;
         public NumberOperationTypes OpType { get; set; } = NumberOperationTypes.Add;
         public override int MaxNumberOfSockets { get => 2; set { } }

@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace NH_VI.GraphLogic.Operators
 {
-   public interface IOperator
+    public interface IOperator
     {
-       List<List<Type>> PossibleTypes { get; }
+        List<Type> InputTypes { get; }
+        List<Type> OutputTypes { get; }
         bool TreeOperator { get; }
         List<IData> ProcessData(List<IData> dat);
     }

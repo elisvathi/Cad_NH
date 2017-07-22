@@ -10,6 +10,7 @@ namespace NH_VI.GraphLogic.Operators
 {
     public class MultiplyOperator : AbstractNumberOperator
     {
+
         protected override IData Calculate(double value1, double value2)
         {
             return new PNumber(value1 * value2);

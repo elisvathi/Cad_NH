@@ -14,13 +14,15 @@ namespace NH_VI.GraphLogic.Operators.BooleanOperators
     }
     public class BooleanOperator : AbstractOperator
     {
-        public override List<List<Type>> PossibleTypes => new List<List<Type>>() { new List<Type> { typeof(PBoolean) }, new List<Type>() { typeof(PBoolean)} };
+        public override List<Type> InputTypes => new List<Type>() {typeof(PBoolean), typeof(PBoolean) };
         public BoolOperationType BType { get; set; } = BoolOperationType.And;
         public override bool TreeOperator => false;
 
         public override int MaxNumberOfSockets { get => BType==BoolOperationType.Not?1:2; set { } }
         public override int MinimumNumberOfSockets { get => BType == BoolOperationType.Not ? 1 : 2; set { } }
         public override int NumberOfOutputs { get => 1; set { } }
+
+        public override List<Type> OutputTypes => new List<Type>() { typeof(PBoolean) };
 
         protected override List<IData> OperateSimple(List<IData> dat)
         {

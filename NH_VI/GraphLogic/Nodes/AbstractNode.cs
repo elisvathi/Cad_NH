@@ -1,0 +1,66 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using CadTest3.GraphLogic;
+using NH_VI.GraphLogic.Operators;
+
+namespace NH_VI.GraphLogic.Nodes
+{
+    public abstract class AbstractNode : INode
+    {
+        private IOperator _operator;
+        public AbstractNode(IOperator op)
+        {
+            _operator = op;
+            InputSockets = new List<InputSocket>();
+            OutputSockets = new List<OutputSocket>();
+            UpdateSockets();
+        }
+
+        private void UpdateSockets()
+        {
+           foreach(var t in _operator.InputTypes)
+            {
+                AddInputSocket(new InputSocket(t, this));
+            }
+           foreach(var t in _operator.OutputTypes)
+            {
+                AddOutputSocket(new OutputSocket(t, this));
+            }
+        }
+
+        public List<InputSocket> InputSockets { get; private set; }
+
+        public List<OutputSocket> OutputSockets { get; private set; }
+
+        public IOperator Operator { get => _operator; }
+
+        private void AddInputSocket(InputSocket s)
+        {
+            s.OnDataChanged += Recalculate;
+            InputSockets.Add(s);
+        }
+        private void AddOutputSocket(OutputSocket s)
+        {
+            OutputSockets.Add(s);
+        }
+
+        protected virtual void Recalculate(IData data)
+        {
+            var list = new List<IData>();
+            foreach(var i in InputSockets)
+            {
+                list.Add(i.Data);
+            }
+          var output =   Operator.ProcessData(list);
+            //OnNodeDataChanged?.Invoke(output);
+            InvokeNodeChangedEvent(output);
+        }
+        protected virtual void InvokeNodeChangedEvent(List<IData> dat) {
+            OnNodeDataChanged?.Invoke(dat);
+        }
+        public event NodeDataChanged OnNodeDataChanged;
+    }
+}
