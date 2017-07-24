@@ -44,7 +44,7 @@
     <Compile Include="Class1.cs" />
     <Compile Include="DataTypes\Abstract\ExternalData.cs" />
     <Compile Include="DataTypes\Abstract\ExternalNumber.cs" />
-    <Compile Include="DataTypes\Abstract\ICopyable.cs" />
+    <Compile Include="DataTypes\Abstract\IExternal.cs" />
     <Compile Include="DataTypes\Boolean\PBoolean.cs" />
     <Compile Include="DataTypes\Numeric\PNumber.cs" />
     <Compile Include="Geometry\PVector.cs" />

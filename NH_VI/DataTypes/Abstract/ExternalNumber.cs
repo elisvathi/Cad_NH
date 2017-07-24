@@ -13,10 +13,20 @@ namespace NH_VI.DataTypes.Abstract
         {
             value = num;
         }
+
+        public event ExternalDelegate OnExternalChanged;
+
         public IExternal Copy()
         {
             return new ExternalNumber(value);
         }
+
+        public void RequestChange(object val)
+        {
+            value = Convert.ToDouble(val);
+            OnExternalChanged?.Invoke(val);
+        }
+
         public override string ToString()
         {
             return "Double " + value;

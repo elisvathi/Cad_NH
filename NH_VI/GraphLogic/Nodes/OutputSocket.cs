@@ -20,6 +20,7 @@ namespace NH_VI.GraphLogic.Nodes
 
         private void NodeChanged(List<IData> dat)
         {
+            Data = dat[Index];
             OnDataChanged?.Invoke(dat[Index]);
         }
         public int Index => _parentNode.OutputSockets.IndexOf(this);

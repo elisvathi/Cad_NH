@@ -175,6 +175,10 @@ namespace Testings
             n2.ConnectToData(new List<ExternalData>() { exData });
 
             Print(n2.OutputSockets[0].Data);
+            exNum.RequestChange(130);
+            Print(n2.OutputSockets[0].Data);
+
+            n.InputSockets[0].ConnectTo(n2.OutputSockets[0]);
         }
         static void Print(string s)
         {

@@ -12,7 +12,13 @@ namespace NH_VI.DataTypes.Abstract
     {
         public delegate void ExternalDataChanged(ExternalData dat);
         public event ExternalDataChanged OnExternalDataChanged;
-        public ExternalData(IExternal val) { Value = val; }
+        public ExternalData(IExternal val) { Value = val;  Value.OnExternalChanged += ExternalChangeInvoker; }
+
+        private void ExternalChangeInvoker(object val)
+        {
+            OnExternalDataChanged?.Invoke(this);
+        }
+
         public override string ToString()
         {
             return "Exernal :" + value.ToString();
