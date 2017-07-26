@@ -3,23 +3,36 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:NH_UI"
+        xmlns:local="clr-namespace:NH_UI.Controls"
+        
         mc:Ignorable="d"
-        Title="NodeHopper" Height="600" Width="800" WindowState="Maximized" Topmost="True" Activated="Window_Activated" >
+        Title="NodeHopper" Height="600" Width="800" WindowState="Maximized"  Activated="Window_Activated" >
     <Grid>
-    <Viewbox MouseWheel="Viewbox_MouseWheel"> <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="51*"/>
-            <RowDefinition Height="61*"/>
-            <RowDefinition Height="173*"/>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="16*"/>
-            <ColumnDefinition Width="27*"/>
-            <ColumnDefinition Width="18*"/>
-        </Grid.ColumnDefinitions>
-        <local:NodeView Grid.ColumnSpan="1" Margin="0,0,0.295,0" Grid.RowSpan="1"></local:NodeView>
-    </Grid>
-    </Viewbox>
+        <Canvas Grid.Row="0" Background="DarkGray" ClipToBounds="True">
+            
+        </Canvas>
+        <!--<Canvas Grid.Row="1" Background="Beige" ClipToBounds="True">
+            <Viewbox Canvas.Top="0" Canvas.Left="0" Canvas.Bottom="0" Stretch="UniformToFill" Canvas.Right="0" MouseWheel="Viewbox_MouseWheel">
+                <Ellipse Fill="Red" Width="100" Height="100"/>
+            </Viewbox>
+        </Canvas>--><!--
+        <Viewbox Stretch="UniformToFill" Grid.Row="1" MouseWheel="Viewbox_MouseWheel">
+            <Ellipse Fill="Red" Width="100" Height="100"/>
+        </Viewbox>-->
+        <ScrollViewer Grid.Row="1" ScrollViewer.CanContentScroll="True">
+            <local:ZoomBorder x:Name="border" ClipToBounds="True"  Background="Beige"   ScrollViewer.CanContentScroll="True">
+            <Canvas>
+                
+                <local:NodeBaseControl   x:Name="first" Width="200" Height="200" Canvas.Left="100" Canvas.Top="100" BaseNode="{Binding FirstNode}"></local:NodeBaseControl>
+                <local:NodeBaseControl x:Name="second" Width="200" Height="200" Canvas.Left="500" Canvas.Top="100" BaseNode="{Binding SecondNode}"></local:NodeBaseControl>
+            </Canvas>
+           
+                
+            </local:ZoomBorder>
+        </ScrollViewer>
     </Grid>
 </Window>

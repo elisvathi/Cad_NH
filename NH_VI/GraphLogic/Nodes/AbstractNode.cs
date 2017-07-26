@@ -36,6 +36,7 @@ namespace NH_VI.GraphLogic.Nodes
         public List<OutputSocket> OutputSockets { get; private set; }
 
         public IOperator Operator { get => _operator; }
+        public abstract string Description { get; set; }
 
         private void AddInputSocket(InputSocket s)
         {

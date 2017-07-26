@@ -12,5 +12,7 @@ namespace NH_VI.GraphLogic.Nodes.NumberNode
         public AddNode() : base(new AddOperator())
         {
         }
+
+        public override string Description { get; set; } = "Add";
     }
 }

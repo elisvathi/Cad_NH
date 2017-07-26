@@ -18,6 +18,9 @@ namespace NH_VI.GraphLogic.Nodes
         private ExternalSocket source;
 
         public ExternalSocket Source { get => source; set { source = value; source.OnDataChanged += this.Recalculate; } }
+
+        public override string Description { get; set; } = "External";
+
         public void ConnectToData(List<ExternalData> dat)
         {
             Source.ConnectToData(dat);

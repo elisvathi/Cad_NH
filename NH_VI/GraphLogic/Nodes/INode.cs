@@ -15,5 +15,6 @@ namespace NH_VI.GraphLogic.Nodes
         List<OutputSocket> OutputSockets { get; }
         IOperator Operator { get; }
        event NodeDataChanged OnNodeDataChanged;
+        string Description { get; set; }
     }
 }

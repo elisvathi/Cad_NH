@@ -13,5 +13,6 @@ namespace NH_VI.GraphLogic.Nodes.NumberNode
         public NumberInputNode() : base(new ExternalNumberOperator())
         {
         }
+        public override string Description { get; set; } = "Number";
     }
 }

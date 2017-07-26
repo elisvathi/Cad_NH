@@ -1,4 +1,7 @@
-﻿using System;
+﻿using NH_UI.Controls;
+using NH_VI.GraphLogic.Nodes;
+using NH_VI.GraphLogic.Nodes.NumberNode;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +23,14 @@ namespace NH_UI
     /// </summary>
     public partial class MainWindow : Window
     {
+        public INode FirstNode { get; set; } = new NumberInputNode();
+        public INode SecondNode { get; set; } = new AddNode();
         public MainWindow()
         {
             InitializeComponent();
+            this.DataContext = this;
+            first.BaseNode = FirstNode;
+            second.BaseNode = SecondNode;
         }
 
         private void Window_Activated(object sender, EventArgs e)
@@ -32,11 +40,13 @@ namespace NH_UI
 
         private void Viewbox_MouseWheel(object sender, MouseWheelEventArgs e)
         {
+            //var vb = sender as Viewbox;
+            //var sc = (ScaleTransform)vb.RenderTransform;
+            //double zoom = e.Delta > 0 ? .2 : -.2;
+            //sc.ScaleX += zoom;
+            //sc.ScaleY += zoom;
             
-            var st = (ScaleTransform)(sender as Viewbox).RenderTransform;
-            double zoom = e.Delta > 0 ? .2 : -.2;
-            st.ScaleX += zoom;
-            st.ScaleY += zoom;
         }
+       
     }
 }
