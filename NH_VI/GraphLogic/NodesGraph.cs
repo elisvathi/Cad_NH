@@ -9,14 +9,17 @@ namespace NH_VI.GraphLogic
 {
     public class NodesGraph
     {
+        public delegate void GraphChanged();
+        public event GraphChanged OnGraphChanged;
         public List<INode> Nodes { get; set; } = new List<INode>();
         public void AddNode(INode n)
         {
             Nodes.Add(n);
+            OnGraphChanged?.Invoke();
         }
         public void RemoveNode(INode n)
         {
-            try { Nodes.Remove(n); }
+            try { Nodes.Remove(n); OnGraphChanged?.Invoke(); }
             catch
             {
                 throw new Exception();

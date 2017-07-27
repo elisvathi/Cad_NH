@@ -45,7 +45,11 @@ namespace NH_UI.Controls
 
         public ZoomBorder(MainCanvas cnv) {
             _canv = cnv;
-            Initialize(_canv);
+            //Initialize(_canv);
+            //Background = Brushes.DeepPink;
+            ClipToBounds = true;
+            Child = _canv;
+            
         }
 
         public void Initialize(UIElement element)

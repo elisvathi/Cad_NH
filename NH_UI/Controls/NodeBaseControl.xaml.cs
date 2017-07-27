@@ -40,6 +40,8 @@ namespace NH_UI.Controls
             InitializeComponent();
             NameText.DataContext = BaseNode;
             this.DataContext = this;
+            Width = 300;
+            Height = 300;
         }
 
         bool drg = false;

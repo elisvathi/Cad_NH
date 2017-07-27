@@ -16,7 +16,9 @@ namespace NH_UI
         [STAThread]
         public static void Main() {
            var kern = new StandardKernel(new AppModule());
+            
             var app = kern.Get<App>();
+            //app.kern = kern;
             app.Run(kern.Get<MainWindow>());
         }
     }

@@ -50,7 +50,6 @@
     <Compile Include="Geometry\PVector.cs" />
     <Compile Include="GraphLogic\AbstractData.cs" />
     <Compile Include="GraphLogic\DataTree.cs" />
-    <Compile Include="GraphLogic\GraphNode.cs" />
     <Compile Include="GraphLogic\IData.cs" />
     <Compile Include="GraphLogic\NodesGraph.cs" />
     <Compile Include="GraphLogic\Nodes\AbstractExternalNode.cs" />

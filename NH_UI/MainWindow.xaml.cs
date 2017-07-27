@@ -4,6 +4,8 @@ using NH_VI.GraphLogic;
 using NH_VI.GraphLogic.Nodes;
 using NH_VI.GraphLogic.Nodes.NumberNode;
 using System.Windows;
+using Ninject;
+using System.Windows.Controls;
 
 namespace NH_UI
 {
@@ -13,23 +15,25 @@ namespace NH_UI
     public partial class MainWindow : Window
     {
         private ContextManager man;
-        public MainWindow(ContextManager mg) { man = mg; }
-        public INode FirstNode { get; set; } = new NumberInputNode();
-        public INode SecondNode { get; set; } = new AddNode();
-
-d        public ZoomBorder Zoomable { get }
-
-        public NodesGraph Grp { get; }
+     
+       
+        private ZoomBorder Zoomable => man.ActiveKernel.Get<ZoomBorder>();
+        private MainCanvas Canvas => man.ActiveKernel.Get<MainCanvas>();
+        public NodesGraph Grp => man.ActiveKernel.Get<NodesGraph>();
 
         private void RefreshWindow()
         {
-            gCont.Children.Add(Zoomable);
+            gContGrid.Children.Add(Zoomable);
+            Grid.SetRow(Zoomable, 0);
+           
         }
 
-        public MainWindow()
+        public MainWindow(ContextManager mg)
         {
+            man = mg;
             InitializeComponent();
             this.DataContext = this;
+            RefreshWindow();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
