@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ninject;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,9 @@ namespace NH_UI.Controls
 {
     public class ZoomBorder : Border
     {
+
+        private MainCanvas _canv;
+
         private UIElement child = null;
         private Point origin;
         private Point start;
@@ -37,6 +41,11 @@ namespace NH_UI.Controls
                     this.Initialize(value);
                 base.Child = value;
             }
+        }
+
+        public ZoomBorder(MainCanvas cnv) {
+            _canv = cnv;
+            Initialize(_canv);
         }
 
         public void Initialize(UIElement element)
@@ -92,7 +101,7 @@ namespace NH_UI.Controls
 
         private void child_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-          
+
             if (child != null)
             {
                 var st = GetScaleTransform(child);

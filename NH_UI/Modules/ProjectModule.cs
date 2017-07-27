@@ -11,11 +11,18 @@ namespace NH_UI.Modules
 {
     class ProjectModule : Ninject.Modules.NinjectModule
     {
+        private ContextManager _manager;
+        public ProjectModule(ContextManager mg) {
+            _manager = mg;
+        }
         public override void Load()
         {
+            Bind<ContextManager>().ToConstant(_manager).InSingletonScope();
             Bind<ZoomBorder>().ToSelf().InSingletonScope();
             Bind<MainCanvas>().ToSelf().InSingletonScope();
             Bind<NodesGraph>().ToSelf().InSingletonScope();
+
+            Bind<NodeBaseControl>().ToSelf().InTransientScope();
         }
     }
 }

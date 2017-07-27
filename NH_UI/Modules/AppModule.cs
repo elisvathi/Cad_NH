@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Ninject;
+using Ninject.Modules;
 
 namespace NH_UI.Modules
 {
-    class AppModule
+    public class AppModule : NinjectModule
     {
+        public override void Load()
+        {
+            Bind<IKernel>().ToConstant(KernelInstance).InSingletonScope().Named("AppKernel");
+            Bind<ContextManager>().ToSelf().InSingletonScope();
+            Bind<MainWindow>().ToSelf().InSingletonScope();
+            Bind<App>().ToSelf().InSingletonScope();
+        }
     }
 }

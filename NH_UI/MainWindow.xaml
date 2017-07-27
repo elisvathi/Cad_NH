@@ -4,35 +4,52 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NH_UI.Controls"
-        
+
         mc:Ignorable="d"
-        Title="NodeHopper" Height="600" Width="800" WindowState="Maximized"  Activated="Window_Activated" >
+        Title="NodeHopper" Height="600" Width="800" WindowState="Maximized" >
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="150"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="150" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Canvas Grid.Row="0" Background="DarkGray" ClipToBounds="True">
-            
+        <Canvas Grid.Row="0" Background="DarkGray" ClipToBounds="True" x:Name="HeaderCanv">
+            <TabControl Width="{Binding ActualWidth, ElementName=HeaderCanv}" Height="{Binding ActualHeight, ElementName=HeaderCanv}">
+                <TabItem Header="Parameters">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Click="Button_Click"></Button>
+                        <Button Grid.Column="1" Click="Button_Click_1"></Button>
+                        <Button Grid.Column="2"></Button>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Math">
+
+                </TabItem>
+                <TabItem Header="Geometry"></TabItem>
+            </TabControl>
         </Canvas>
+        <Canvas Grid.Row="1" x:Name="gCont"></Canvas>
         <!--<Canvas Grid.Row="1" Background="Beige" ClipToBounds="True">
             <Viewbox Canvas.Top="0" Canvas.Left="0" Canvas.Bottom="0" Stretch="UniformToFill" Canvas.Right="0" MouseWheel="Viewbox_MouseWheel">
-                <Ellipse Fill="Red" Width="100" Height="100"/>
+                <Ellipse Fill="Red" Width="100" Height="100" />
             </Viewbox>
-        </Canvas>--><!--
+        </Canvas>-->
+        <!--
         <Viewbox Stretch="UniformToFill" Grid.Row="1" MouseWheel="Viewbox_MouseWheel">
-            <Ellipse Fill="Red" Width="100" Height="100"/>
+            <Ellipse Fill="Red" Width="100" Height="100" />
         </Viewbox>-->
-        <ScrollViewer x:Name="MainScrollView" Grid.Row="1" ScrollViewer.CanContentScroll="True">
+        <!--<ScrollViewer x:Name="MainScrollView" Grid.Row="1" ScrollViewer.CanContentScroll="True">
             <local:ZoomBorder x:Name="border" ClipToBounds="True"  Background="Beige"   ScrollViewer.CanContentScroll="True">
             <Canvas>
-                
+
                 <local:NodeBaseControl   x:Name="first" Width="200" Height="200" Canvas.Left="100" Canvas.Top="100" BaseNode="{Binding FirstNode}"></local:NodeBaseControl>
                 <local:NodeBaseControl x:Name="second" Width="200" Height="200" Canvas.Left="500" Canvas.Top="100" BaseNode="{Binding SecondNode}"></local:NodeBaseControl>
             </Canvas>
-           
-                
             </local:ZoomBorder>
-        </ScrollViewer>
+        </ScrollViewer>-->
     </Grid>
 </Window>
