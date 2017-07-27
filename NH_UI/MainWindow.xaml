@@ -23,7 +23,7 @@
         <Viewbox Stretch="UniformToFill" Grid.Row="1" MouseWheel="Viewbox_MouseWheel">
             <Ellipse Fill="Red" Width="100" Height="100"/>
         </Viewbox>-->
-        <ScrollViewer Grid.Row="1" ScrollViewer.CanContentScroll="True">
+        <ScrollViewer x:Name="MainScrollView" Grid.Row="1" ScrollViewer.CanContentScroll="True">
             <local:ZoomBorder x:Name="border" ClipToBounds="True"  Background="Beige"   ScrollViewer.CanContentScroll="True">
             <Canvas>
                 

@@ -52,6 +52,7 @@
     <Compile Include="GraphLogic\DataTree.cs" />
     <Compile Include="GraphLogic\GraphNode.cs" />
     <Compile Include="GraphLogic\IData.cs" />
+    <Compile Include="GraphLogic\NodesGraph.cs" />
     <Compile Include="GraphLogic\Nodes\AbstractExternalNode.cs" />
     <Compile Include="GraphLogic\Nodes\AbstractNode.cs" />
     <Compile Include="GraphLogic\Nodes\Connector.cs" />

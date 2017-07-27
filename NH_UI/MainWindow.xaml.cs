@@ -1,6 +1,7 @@
 ﻿using NH_UI.Controls;
 using NH_VI.GraphLogic.Nodes;
 using NH_VI.GraphLogic.Nodes.NumberNode;
+using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,17 @@ namespace NH_UI
     {
         public INode FirstNode { get; set; } = new NumberInputNode();
         public INode SecondNode { get; set; } = new AddNode();
+
+        private ZoomBorder _zoomb;
+        [Inject]
+        public ZoomBorder Zoomable { get=>_zoomb; set { _zoomb = value;  RefreshWindow(); } }
+
+        private void RefreshWindow()
+        {
+           
+            MainScrollView.Content = Zoomable;
+        }
+
         public MainWindow()
         {
             InitializeComponent();
