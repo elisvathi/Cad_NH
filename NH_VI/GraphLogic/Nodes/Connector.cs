@@ -56,5 +56,11 @@ namespace NH_VI.GraphLogic.Nodes
             OnDataChanged -= ending.UpdateData;
             starting.OnDataChanged -= UpdateData;
         }
+        public override bool Equals(object obj)
+        {
+            if(!(obj is Connector)) { return false; }
+            var a = obj as Connector;
+            return ending == a.ending && starting == a.starting;
+        }
     }
 }

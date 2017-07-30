@@ -1,12 +1,12 @@
-﻿<UserControl x:Class="NH_UI.Controls.Nodes.DraggableEllipse"
+﻿<UserControl x:Class="NH_UI.Controls.ConnectorCurve"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:NH_UI.Controls.Nodes"
+             xmlns:local="clr-namespace:NH_UI.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <Ellipse Stroke="Black" Fill="White" StrokeThickness="3" AllowDrop="True" MouseLeftButtonDown="Ellipse_MouseDown" MouseEnter="shape_MouseEnter" MouseUp="shape_MouseUp" x:Name="shape"></Ellipse>
+        <Canvas x:Name="CrvCanv"></Canvas>
     </Grid>
 </UserControl>

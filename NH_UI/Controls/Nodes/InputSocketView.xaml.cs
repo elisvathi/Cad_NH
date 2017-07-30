@@ -1,4 +1,6 @@
-﻿using NH_VI.GraphLogic.Nodes;
+﻿using NH_UI.Modules;
+using NH_VI.GraphLogic.Nodes;
+using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,36 +21,51 @@ namespace NH_UI.Controls.Nodes
     /// <summary>
     /// Interaction logic for Socket.xaml
     /// </summary>
-    public partial class InputSocketView : UserControl
+    public partial class InputSocketView : UserControl, ISocketView
     {
+        public delegate void SocketDragStart(ISocketView sock);
+        public event SocketDragStart OnSocketDragStarted;
         public InputSocket sock;
-        public InputSocketView(InputSocket s)
+        private ContextManager manager;
+        private MainCanvas BaseCanv => manager.ActiveKernel.Get<MainCanvas>();
+        public InputSocketView(InputSocket s, ContextManager mg)
         {
+            manager = mg;
             sock = s;
             InitializeComponent();
             Height = 50;
             Width = 100;
             TooltipDescription.DataContext = this;
-            Handler.OnDragEnded += Handle_drag_finish;
-            Handler.OnDragStarted += Hanle_drag_start;
-            Handler.OnDropReceived += HandleDropReceived;
+            
         }
 
-        private void HandleDropReceived()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void Hanle_drag_start()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void Handle_drag_finish()
-        {
-            throw new NotImplementedException();
-        }
+       
 
         private string InputInfo => sock.Data.DataDescription;
+
+        public DraggableEllipse EllipseHandler => Handler;
+
+        private void Handler_OnDragStarted()
+        {
+            OnSocketDragStarted?.Invoke(this);
+        }
+
+        private void Handler_OnDragReceived()
+        {
+
+        }
+
+        private void Handler_OnDragFinished()
+        {
+            if (BaseCanv.IsTempActive && BaseCanv.tempSocket is OutputSocketView)
+            {
+                var sc = BaseCanv.tempSocket as OutputSocketView;
+                if (sc.sock.ParentNode != sock.ParentNode)
+                {
+                    sock.ConnectTo(sc.sock,!BaseCanv.isShiftPressed);
+                    BaseCanv.FinalazeTemp();
+                }
+            }
+        }
     }
 }

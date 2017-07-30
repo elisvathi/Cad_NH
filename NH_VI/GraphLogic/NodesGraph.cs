@@ -31,12 +31,12 @@ namespace NH_VI.GraphLogic
 
         private void ConnectorRemoved(Connector n)
         {
-            OnConnectorAdded?.Invoke(n);
+            OnConnectorRemoved?.Invoke(n);
         }
 
         private void ConnectorAdded(Connector n)
         {
-            OnConnectorRemoved?.Invoke(n);
+            OnConnectorAdded?.Invoke(n);
         }
 
         public void RemoveNode(INode n)

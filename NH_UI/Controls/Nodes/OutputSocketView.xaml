@@ -11,7 +11,7 @@
         <ToolTip>
             <StackPanel>
                 <TextBlock FontWeight="Bold">Output</TextBlock>
-                <TextBlock x:Name="TooltipDescription" Text="{Binding OutputInfo}"></TextBlock>
+                <TextBlock x:Name="TooltipDescription" Text="{Binding  ElementName=_this, Path=OutputInfo}"></TextBlock>
             </StackPanel>
         </ToolTip>
     </UserControl.ToolTip>
@@ -29,7 +29,7 @@
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         <Viewbox x:Name="EllipseContainer" Grid.Column="3" Grid.Row="1" Stretch="Uniform" ClipToBounds="True">
-            <local:DraggableEllipse x:Name="Handler" Width="20" Height="20"></local:DraggableEllipse>
+            <local:DraggableEllipse x:Name="Handler" Width="20" Height="20" OnDragStarted="Handler_OnDragStarted" OnDragFinished="Handler_OnDragFinished"></local:DraggableEllipse>
         </Viewbox>
         <Viewbox Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="3">
             <TextBlock Text="T"></TextBlock>

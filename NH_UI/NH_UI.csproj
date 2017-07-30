@@ -61,11 +61,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Nodes\IncputSocketView.xaml">
+    <Page Include="Controls\Nodes\InputSocketView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Nodes\OutputSocketView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TemporaryCurve.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -74,7 +78,11 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="App.cs" />
-    <Compile Include="Controls\ConnectorCurve.cs" />
+    <Page Include="Controls\ConnectorCurve.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Compile Include="Controls\ConnectorCurve.xaml.cs" />
     <Compile Include="Controls\MainCanvas.cs" />
     <Compile Include="Controls\NodeBaseControl.xaml.cs">
       <DependentUpon>NodeBaseControl.xaml</DependentUpon>
@@ -83,9 +91,13 @@
       <DependentUpon>DraggableEllipse.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Nodes\InputSocketView.xaml.cs" />
+    <Compile Include="Controls\Nodes\ISocketView.cs" />
     <Compile Include="Controls\Nodes\NodeAdorner.cs" />
     <Compile Include="Controls\Nodes\OutputSocketView.xaml.cs">
       <DependentUpon>OutputSocketView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TemporaryCurve.xaml.cs">
+      <DependentUpon>TemporaryCurve.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ZoomBorder.cs" />
     <Compile Include="MainWindow.xaml.cs">

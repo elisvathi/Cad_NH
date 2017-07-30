@@ -29,7 +29,7 @@
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         <Viewbox x:Name="EllipseContainer" Grid.Column="0" Grid.Row="1" Stretch="Uniform" ClipToBounds="True">
-            <local:DraggableEllipse x:Name="Handler" Width="20" Height="20"></local:DraggableEllipse>
+            <local:DraggableEllipse x:Name="Handler" Width="20" Height="20" OnDragStarted="Handler_OnDragStarted" OnDragReceived="Handler_OnDragReceived" OnDragFinished="Handler_OnDragFinished"></local:DraggableEllipse>
         </Viewbox>
         <Viewbox Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="3">
             <TextBlock Text="T"></TextBlock></Viewbox>

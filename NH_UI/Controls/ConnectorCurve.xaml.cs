@@ -10,12 +10,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
 namespace NH_UI.Controls
 {
-    public class ConnectorCurve
+    public partial class ConnectorCurve : UserControl
     {
         public Connector con;
         private ContextManager manager;
@@ -25,9 +26,10 @@ namespace NH_UI.Controls
             get
             {
                 var p = new Path();
+                p.Opacity = 0.7;
                 p.Stroke = Stroke;
-                p.StrokeThickness = IsSingle ? 2 : 4;
-                p.StrokeDashArray = IsTree ? new DoubleCollection() { 1, 1 } : new DoubleCollection() { 1 };
+                p.StrokeThickness = IsSingle ? 3 : 7;
+                p.StrokeDashArray = IsTree ? new DoubleCollection() { 3, 2 } : new DoubleCollection() { 1,0 };
                 var geometry = new PathGeometry();
                 p.Data = geometry;
                 var pt = new PathFigure();
@@ -68,18 +70,18 @@ namespace NH_UI.Controls
         public Path path;
         public ConnectorCurve (ContextManager cm, Connector c )
         {
+            InitializeComponent();
             manager = cm;
             con = c;
             path = GetPath;
+            CrvCanv.Children.Add(path);
         }
         public void UpdatePath()
         {
-            //{
-            //    path.Data = GetPath.Data;
-            //    path.Stroke = GetPath.Stroke;
-            //    path.StrokeDashArray = GetPath.StrokeDashArray;
-            //    path.StrokeThickness = GetPath.StrokeThickness;
+            CrvCanv.Children.Clear();
             path = GetPath;
+            CrvCanv.Children.Add(path);
         }
+       
     }
 }

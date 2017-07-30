@@ -33,9 +33,9 @@ namespace NH_VI.GraphLogic.Nodes
         {
             OnDataChanged?.Invoke(data);
         }
-        public void ConnectTo(OutputSocket s)
+        public void ConnectTo(OutputSocket s, bool repl = true)
         {
-            var v = new Connector(s, this);
+            var v = new Connector(s, this,repl);
         }
         public void Disconnect(Connector c)
         {

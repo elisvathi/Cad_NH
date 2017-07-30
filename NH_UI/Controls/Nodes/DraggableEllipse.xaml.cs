@@ -20,29 +20,18 @@ namespace NH_UI.Controls.Nodes
     /// </summary>
     public partial class DraggableEllipse : UserControl
     {
-        public delegate void ReceivedDrop();
-        public event ReceivedDrop OnDropReceived;
-        public delegate void EllipseDragstarted();
-        public event EllipseDragstarted OnDragStarted;
-        public event EllipseDragstarted OnDragEnded;
+       
+        public delegate void EllipseDragActions();
+        
+        public event EllipseDragActions OnDragStarted;
+        public event EllipseDragActions OnDragReceived;
+        public event EllipseDragActions OnDragFinished;
         public DraggableEllipse()
         {
             InitializeComponent();
         }
 
-        private void Ellipse_Drop(object sender, DragEventArgs e)
-        {
-            if(e.OriginalSource is DraggableEllipse) { 
-            OnDropReceived?.Invoke();
-            }
-        }
-
-        private void Ellipse_DragEnter(object sender, DragEventArgs e)
-        {
-            if(e.OriginalSource is DraggableEllipse) { 
-            shape.Fill = Brushes.Red;
-            }
-        }
+        
 
         private void Ellipse_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -52,12 +41,20 @@ namespace NH_UI.Controls.Nodes
             }
         }
 
-        private void Ellipse_MouseUp(object sender, MouseButtonEventArgs e)
+        private void shape_MouseEnter(object sender, MouseEventArgs e)
         {
-            if(e.LeftButton== MouseButtonState.Released)
+            if(e.LeftButton == MouseButtonState.Pressed) {
+            OnDragReceived?.Invoke();
+                Entered = true;
+            }
+        }
+        bool Entered = false;
+        private void shape_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (Entered)
             {
-                OnDragEnded?.Invoke();
-                
+                OnDragFinished?.Invoke();
+                Entered = false;
             }
         }
     }

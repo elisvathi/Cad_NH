@@ -52,9 +52,9 @@ namespace NH_VI.GraphLogic.Nodes
                 c.Disconnect();
             }
         }
-        public void ConnectTo(InputSocket s)
+        public void ConnectTo(InputSocket s, bool repl = true)
         {
-            var v = new Connector(this, s);
+            var v = new Connector(this, s, repl);
         }
     }
 }

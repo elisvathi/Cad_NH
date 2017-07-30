@@ -24,6 +24,10 @@ namespace NH_UI.Controls
         private ContextManager _manager;
         private Canvas NodesCanvas;
         private Canvas ConnectionsCanvas;
+        private TemporaryCurve tempCurve;
+        public ISocketView tempSocket;
+        public bool IsTempActive;
+        
         public MainCanvas(NodesGraph graph, ContextManager manager)
         {
             _graph = graph;
@@ -33,38 +37,68 @@ namespace NH_UI.Controls
             _graph.OnNodeAdded += NodedAddedHandler;
             _graph.OnNodeRemoved += NodeRemovedHandler;
             _manager = manager;
-           
 
-            var p = new Path();
-            var geom = new PathGeometry();
-            p.Data = geom;
-            var pt = new PathFigure();
-            geom.Figures.Add(pt);
-            pt.StartPoint = new System.Windows.Point(0,100);
-            pt.Segments.Add(new BezierSegment(new System.Windows.Point(100, 100), new System.Windows.Point(100, 200), new System.Windows.Point(200, 200), true));
+            Background = Brushes.Wheat;
             
-            p.Stroke = Brushes.Black;
-            p.StrokeDashArray = new DoubleCollection() { 3, 2 };
-            p.StrokeThickness = 7;
-            p.StrokeDashCap = PenLineCap.Round;
-            p.Opacity = 0.8;
             var g = new Grid();
             Children.Add(g);
             NodesCanvas = new Canvas();
             ConnectionsCanvas = new Canvas();
-          
-            g.Children.Add(NodesCanvas);
             g.Children.Add(ConnectionsCanvas);
-            ConnectionsCanvas.Children.Add(p);
+            g.Children.Add(NodesCanvas);
+          MouseMove += MouseMoveHandler;
+           MouseUp += MouseUpHandler;
+            KeyDown += ShifHandler;
+            KeyUp += ReleaseShiftHandler;
             
+        }
+        public bool isShiftPressed;
+        private void ReleaseShiftHandler(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.LeftShift || e.Key == Key.RightShift)
+            {
+                isShiftPressed = false;
+            }
+        }
+
+        private void ShifHandler(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.LeftShift || e.Key == Key.RightShift)
+            {
+                isShiftPressed = true;
+            }
+        }
+
+        private void MouseUpHandler(object sender, MouseButtonEventArgs e)
+        {
+            if( IsTempActive)
+            {
+                FinalazeTemp();
+            }
+        }
+
+        internal void FinalazeTemp()
+        {
+            IsTempActive = false;
+            tempCurve.FinalizeSuccess();
+            ConnectionsCanvas.Children.Remove(tempCurve);
+        }
+
+        private void MouseMoveHandler(object sender, MouseEventArgs e)
+        {
+            if(e.LeftButton == MouseButtonState.Pressed && IsTempActive)
+            {
+                tempCurve.UpdatePoint(e.GetPosition(ConnectionsCanvas));
+            }
         }
 
         private void NodeRemovedHandler(INode n)
         {
             if (HasNode(n))
             {
+                
                 NodesCanvas.Children.Remove(GetControl(n));
-
+                
             }
         }
 
@@ -72,30 +106,32 @@ namespace NH_UI.Controls
         {
             if (!HasNode(n))
             {
-                NodesCanvas.Children.Add(new NodeBaseControl(_manager, _manager.ActiveKernel.Get<ZoomBorder>(), n));
-
+                var nn = new NodeBaseControl(_manager, _manager.ActiveKernel.Get<ZoomBorder>(), n);
+                NodesCanvas.Children.Add(nn);
+                nn.OnSocketDragStart += SocketDragStarted;
             }
+        }
+
+        private void SocketDragStarted(ISocketView sock)
+        {
+
+            tempSocket = sock;
+            IsTempActive = true;
+            tempCurve = new TemporaryCurve(sock, _manager);
+            ConnectionsCanvas.Children.Add(tempCurve);
         }
 
         private void ConnectorRemovedHandler(Connector n)
         {
             if (HasConnector(n))
             {
-                var crv = from a in Curves where a.con == n select a;
-                //ConnectionsCanvas.Children.Remove(crv.First().path);
-                Curves.Remove(crv.First());
-                RefreshCurves();
+               
+                ConnectionsCanvas.Children.Remove(GetCurve(n));
+ 
             }
         }
 
-        public void RefreshCurves()
-        {
-            ConnectionsCanvas.Children.Clear();
-            foreach(var v in Curves)
-            {
-                ConnectionsCanvas.Children.Add(v.path);
-            }
-        }
+ 
 
         private void ConnectorAdedHandler(Connector n)
         {
@@ -103,10 +139,8 @@ namespace NH_UI.Controls
             if (!HasConnector(n))
             {
                 var con = new ConnectorCurve(_manager, n);
-                Curves.Add(con);
+               ConnectionsCanvas.Children.Add(con);
 
-                //ConnectionsCanvas.Children.Add(con.path);
-                RefreshCurves();
             }
         }
 
@@ -130,7 +164,7 @@ namespace NH_UI.Controls
 
                 if (!HasNode(n))
                 {
-                    //var nc = _manager.ActiveKernel.Get<NodeBaseControl>();
+  
                     var nc = new NodeBaseControl(_manager, _manager.ActiveKernel.Get<ZoomBorder>(), n);
 
                     var al = AdornerLayer.GetAdornerLayer(this);
@@ -139,27 +173,43 @@ namespace NH_UI.Controls
                 }
             }
 
-            for (int ind = Curves.Count; ind>=0;ind--)
+            for (int ind = ConnectionsCanvas.Children.Count-1; ind>=0;ind--)
             {
-                var con = Curves[i];
-                if (!_graph.Connectors.Contains(con.con))
+                if (ConnectionsCanvas.Children[i] is ConnectorCurve)
                 {
-                    ConnectionsCanvas.Children.Remove(con.path);
-                    Curves.RemoveAt(i);
+                    var con = ConnectionsCanvas.Children[i] as ConnectorCurve;
+                    if (!_graph.Connectors.Contains(con.con))
+                    {
+                      
+                        ConnectionsCanvas.Children.Remove(con);
+                    } 
                 }
             }
             foreach (var c in _graph.Connectors)
             {
                 if (!HasConnector(c))
                 {
-                    Curves.Add(new ConnectorCurve(_manager, c));
-                    //var crv = new ConnectorCurve(_manager, c);
-                    ConnectionsCanvas.Children.Add(Curves.Last().path);
+                   
+                    ConnectionsCanvas.Children.Add(new ConnectorCurve(_manager, c));
                 }
             }
         }
 
-        public List<ConnectorCurve> Curves = new List<ConnectorCurve>();
+        public List<ConnectorCurve> Curves
+        {
+            get
+            {
+                var retVal = new List<ConnectorCurve>();
+                foreach (var v in ConnectionsCanvas.Children)
+                {
+                    if (v is ConnectorCurve)
+                    {
+                        retVal.Add(v as ConnectorCurve);
+                    }
+                }
+                return retVal;
+            }
+        }
         private bool HasNode(INode n)
         {
             return AddedNodes.Contains(n);
@@ -168,48 +218,49 @@ namespace NH_UI.Controls
         {
             return Connectors.Contains(c);
         }
-        private IEnumerable<Connector> Connectors
+        private List<Connector> Connectors
         {
             get
             {
-                foreach (var c in Curves)
+                var retVal = new List<Connector>();
+                foreach (var v in Curves)
                 {
-                    yield return c.con;
+                   
+                        retVal.Add(v.con);
+                    
                 }
+                return retVal;
             }
         }
         public ConnectorCurve GetCurve(Connector c)
         {
-            var s = from a in Curves where a.con == c select a;
-            return s.Count() > 0 ? s.First() : null ;
-        }
-        public IEnumerable<ConnectorCurve> GetCurvesForInputSocket(InputSocket s) {
-            foreach (var con in s.Connectors)
+            //var s = from a in ConnectionsCanvas.Children.OfType<ConnectorCurve>() where a.con.Equals(c) select a;
+            //return s.First();
+            var s = ConnectionsCanvas.Children;
+            foreach ( var v in s)
             {
-                var crv = GetCurve(con);
-                if(crv != null) { yield return crv; }
-               
+                if((v is ConnectorCurve))
+                {
+                    if((v as ConnectorCurve).con.Equals(c))
+                    {
+                        return v as ConnectorCurve;
+                    }
+                   
+                }
             }
+            return null;
         }
-        public IEnumerable<ConnectorCurve> GetCurvesForOutputSocket(OutputSocket s)
+        public InputSocketView GetInputSocketControl(InputSocket sc)
         {
-            foreach(var con in s.Connectors)
-            {
-                var crv = GetCurve(con);
-                if (crv != null) { yield return crv; }
-            }
+            var nd = GetControl(sc.ParentNode);
+            return nd.GetInputSocketControl(sc);
         }
-        public IEnumerable<ConnectorCurve> GetNodeCurves(INode n)
+        public OutputSocketView GetOutputSocketControl(OutputSocket sc)
         {
-            foreach (var inp in n.InputSockets)
-            {
-               foreach (var crv in GetCurvesForInputSocket(inp)) { yield return crv; }
-            }
-            foreach(var outp in n.OutputSockets)
-            {
-                foreach(var crv in GetCurvesForOutputSocket(outp)) { yield return crv; }
-            }
+            var nd = GetControl(sc.ParentNode);
+            return nd.GetOutputSocketControl(sc);
         }
+
 
         private NodeBaseControl GetControl(INode n)
         {
@@ -219,16 +270,7 @@ namespace NH_UI.Controls
             return a.Count()>0?a.First():null;
         }
         
-        public OutputSocketView GetOutputSocketControl(OutputSocket soc)
-        {
-            var a=  GetControl(soc.ParentNode);
-            return a?.GetOutputSocketControl(soc);
-        }
-        public InputSocketView GetInputSocketControl(InputSocket soc)
-        {
-            var a = GetControl(soc.ParentNode);
-            return a?.GetInputSocketControl(soc) ;
-        }
+       
 
         private List<INode> AddedNodes
         {

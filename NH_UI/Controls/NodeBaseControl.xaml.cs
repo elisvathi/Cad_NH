@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static NH_UI.Controls.Nodes.InputSocketView;
 
 namespace NH_UI.Controls
 {
@@ -62,21 +63,28 @@ namespace NH_UI.Controls
             float hout = h / NumOutpu;
             foreach (var inS in BaseNode.InputSockets)
             {
-                var sv = new InputSocketView(inS);
+                var sv = new InputSocketView(inS, manager);
                 Canvas.SetLeft(sv, -25);
                 Canvas.SetTop(sv, hinpu * i - hinpu / 2 - sv.Height / 2);
+                sv.OnSocketDragStarted += SocketDrag;
                 SocketsCanvas.Children.Add(sv);
                 i++;
             }
             i = 1;
             foreach (var outS in BaseNode.OutputSockets)
             {
-                var sv = new OutputSocketView(outS);
+                var sv = new OutputSocketView(outS, manager);
                 Canvas.SetRight(sv, -25);
                 Canvas.SetTop(sv, hout * i - hout / 2 - sv.Height / 2);
+                sv.OnSocketDragStart += SocketDrag;
                 SocketsCanvas.Children.Add(sv);
                 i++;
             }
+        }
+        public event SocketDragStart OnSocketDragStart;
+        private void SocketDrag(ISocketView sock)
+        {
+            OnSocketDragStart?.Invoke(sock);
         }
 
         bool drg = false;
@@ -100,20 +108,37 @@ namespace NH_UI.Controls
 
                 Canvas.SetLeft(this, (Canvas.GetLeft(this) + e.GetPosition(baseCanvas).X - lastPos.X));
                 Canvas.SetTop(this, (Canvas.GetTop(this) + e.GetPosition(baseCanvas).Y - lastPos.Y));
-                foreach (var crv in baseCanvas.Curves)
+                foreach (var crv in Connectors)
                 {
-                    crv.UpdatePath();
-                    baseCanvas.RefreshCurves();
+                    var cc = baseCanvas.GetCurve(crv);
+                        cc?.UpdatePath();
+                    
                 }
                 lastPos = e.GetPosition(baseCanvas);
             }
         }
 
-        private IEnumerable<ConnectorCurve> Curves
+
+        private List<Connector> Connectors
         {
             get
             {
-                return baseCanvas.GetNodeCurves(BaseNode);
+                var retVal = new List<Connector>();
+                foreach(var s in BaseNode.InputSockets)
+                {
+                    foreach (var c in s.Connectors)
+                    {
+                        retVal.Add(c);
+                    }
+                }
+                foreach (var s in BaseNode.OutputSockets)
+                {
+                    foreach(var c in s.Connectors)
+                    {
+                        retVal.Add(c);
+                    }
+                }
+                return retVal;
             }
         }
 
