@@ -23,15 +23,17 @@ namespace NH_VI.GraphLogic.Nodes
 
         void Connect(OutputSocket input, InputSocket output, bool replaceEnding = true)
         {
-            starting = input;
             ending = output;
+            if (IsNotValidReference(output.ParentNode)) {
+            starting = input;
+           
             starting.Connectors.Add(this);
             starting.OnDataChanged += UpdateData;
             if (replaceEnding)
             {
-               //foreach(var c in ending.Connectors) { c.Disconnect(); }
+                //foreach(var c in ending.Connectors) { c.Disconnect(); }
 
-               for (int i = ending.Connectors.Count-1; i >= 0; i--)
+                for (int i = ending.Connectors.Count - 1; i >= 0; i--)
                 {
                     ending.Connectors[i].Disconnect();
                 }
@@ -40,12 +42,31 @@ namespace NH_VI.GraphLogic.Nodes
             }
             ending.ParentNode.InvokeConnectorAdded(this);
             starting.ParentNode.InvokeConnectorAdded(this);
+            }
         }
 
         private void UpdateData(IData data)
         {
             OnDataChanged?.Invoke(data);
         }
+
+       public bool IsNotValidReference(INode s)
+        {
+            var val = true;
+            foreach (var os in ending.ParentNode.OutputSockets)
+            {
+                foreach(var c in os.Connectors)
+                {
+                    val &= (c.ending.ParentNode != s);
+                    if (val == false) return false;
+                }
+            }
+            var lst = new List<Connector>();
+            foreach (var v in ending.ParentNode.OutputSockets) { foreach (var c in v.Connectors) { lst.Add(c); } }
+            foreach(var c in lst) { val &= c.IsNotValidReference(s); }
+            return true;
+        }
+
         public void Disconnect()
         {
             starting.ParentNode.InvokeConnectorRemoved(this);
@@ -58,7 +79,7 @@ namespace NH_VI.GraphLogic.Nodes
         }
         public override bool Equals(object obj)
         {
-            if(!(obj is Connector)) { return false; }
+            if (!(obj is Connector)) { return false; }
             var a = obj as Connector;
             return ending == a.ending && starting == a.starting;
         }
