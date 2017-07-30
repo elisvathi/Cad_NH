@@ -32,6 +32,21 @@ namespace NH_UI.Controls
               .Children.First(tr => tr is ScaleTransform);
         }
 
+        private TranslateTransform GetTranslateTransform()
+        {
+            return GetTranslateTransform(child);
+        }
+        private ScaleTransform GetScaleTransform()
+        {
+            return GetScaleTransform(child);
+        }
+        //public Point ScreenToElement(Point p)
+        //{
+
+        //}
+
+        public double ActualScale => GetScaleTransform(child).ScaleX;
+
         public override UIElement Child
         {
             get { return base.Child; }

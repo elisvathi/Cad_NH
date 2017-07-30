@@ -39,6 +39,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
@@ -47,6 +48,8 @@
     <Compile Include="DataTypes\Abstract\IExternal.cs" />
     <Compile Include="DataTypes\Boolean\PBoolean.cs" />
     <Compile Include="DataTypes\Numeric\PNumber.cs" />
+    <Compile Include="Geometry\PCurve.cs" />
+    <Compile Include="Geometry\PSurface.cs" />
     <Compile Include="Geometry\PVector.cs" />
     <Compile Include="GraphLogic\AbstractData.cs" />
     <Compile Include="GraphLogic\DataTree.cs" />

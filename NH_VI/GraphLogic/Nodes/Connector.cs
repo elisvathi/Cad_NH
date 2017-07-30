@@ -29,10 +29,17 @@ namespace NH_VI.GraphLogic.Nodes
             starting.OnDataChanged += UpdateData;
             if (replaceEnding)
             {
-               foreach(var c in ending.Connectors) { c.Disconnect(); }
+               //foreach(var c in ending.Connectors) { c.Disconnect(); }
+
+               for (int i = ending.Connectors.Count-1; i >= 0; i--)
+                {
+                    ending.Connectors[i].Disconnect();
+                }
                 ending.Connectors.Add(this);
                 this.OnDataChanged += ending.UpdateData;
             }
+            ending.ParentNode.InvokeConnectorAdded(this);
+            starting.ParentNode.InvokeConnectorAdded(this);
         }
 
         private void UpdateData(IData data)
@@ -41,8 +48,11 @@ namespace NH_VI.GraphLogic.Nodes
         }
         public void Disconnect()
         {
+            starting.ParentNode.InvokeConnectorRemoved(this);
+            ending.ParentNode.InvokeConnectorRemoved(this);
             starting.Connectors.Remove(this);
             ending.Connectors.Remove(this);
+
             OnDataChanged -= ending.UpdateData;
             starting.OnDataChanged -= UpdateData;
         }

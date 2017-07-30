@@ -45,5 +45,27 @@ namespace NH_UI
         {
             Grp.AddNode(new NumberInputNode());
         }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            var test1 = false;
+            var test2 = false;
+            foreach(var n in Grp.Nodes)
+            {
+                if (n is AddNode) { test1 = true; }
+                if(n is NumberInputNode) { test2 = true; }
+            }
+            if (test1 && test2)
+            {
+                var an = Grp.Nodes.Find(x => x is AddNode);
+                var nn = Grp.Nodes.Find(x => x is NumberInputNode);
+                var ann = an as AddNode;
+                var nnn = nn as NumberInputNode;
+                var ot = nnn.OutputSockets[0];
+                var inp = ann.InputSockets[0];
+                ot.ConnectTo(inp);
+            }
+            
+        }
     }
 }

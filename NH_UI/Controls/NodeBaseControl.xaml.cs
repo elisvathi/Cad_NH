@@ -1,4 +1,7 @@
-﻿using NH_VI.GraphLogic.Nodes;
+﻿using NH_UI.Controls.Nodes;
+using NH_UI.Modules;
+using NH_VI.GraphLogic.Nodes;
+using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,64 +24,149 @@ namespace NH_UI.Controls
     /// </summary>
     public partial class NodeBaseControl : UserControl
     {
-        public static readonly DependencyProperty NodeProp = DependencyProperty.Register(
-            "BaseNode",
-            typeof(INode),
-            typeof(NodeBaseControl)
-            );
 
-        public INode BaseNode { get { return (INode)GetValue(NodeProp); } set { SetValue(NodeProp, value); Refresh(); } }
+
+        public INode BaseNode { get; set; }
 
         private void Refresh()
         {
             //System.Diagnostics.Debug.WriteLine("NODENAME: " + BaseNode.Description);
             NameText.Text = BaseNode.Description;
         }
+        private ZoomBorder zoomable;
 
-        public NodeBaseControl()
+        private int NumInput => BaseNode.InputSockets.Count;
+        private int NumOutpu => BaseNode.OutputSockets.Count;
+        ContextManager manager;
+        private MainCanvas baseCanvas => manager.ActiveKernel.Get<MainCanvas>();
+        public NodeBaseControl(ContextManager cm, ZoomBorder zb, INode bn)
         {
+            manager = cm;
             InitializeComponent();
+            BaseNode = bn;
             NameText.DataContext = BaseNode;
             this.DataContext = this;
             Width = 300;
-            Height = 300;
+            Height = Math.Max(NumInput, NumOutpu) * 100;
+            Canvas.SetTop(this, 1);
+            Canvas.SetLeft(this, 1);
+            zoomable = zb;
+            AdjustSockets();
+        }
+
+        private void AdjustSockets()
+        {
+            int i = 1;
+            float h = Math.Max(NumInput, NumOutpu) * 100;
+            float hinpu = h / NumInput;
+            float hout = h / NumOutpu;
+            foreach (var inS in BaseNode.InputSockets)
+            {
+                var sv = new InputSocketView(inS);
+                Canvas.SetLeft(sv, -25);
+                Canvas.SetTop(sv, hinpu * i - hinpu / 2 - sv.Height / 2);
+                SocketsCanvas.Children.Add(sv);
+                i++;
+            }
+            i = 1;
+            foreach (var outS in BaseNode.OutputSockets)
+            {
+                var sv = new OutputSocketView(outS);
+                Canvas.SetRight(sv, -25);
+                Canvas.SetTop(sv, hout * i - hout / 2 - sv.Height / 2);
+                SocketsCanvas.Children.Add(sv);
+                i++;
+            }
         }
 
         bool drg = false;
         Point lastPos;
         private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
-          if(e.LeftButton == MouseButtonState.Pressed)
+            if (e.LeftButton == MouseButtonState.Pressed)
             {
                 drg = true;
-                lastPos = e.GetPosition(null);
+                lastPos = e.GetPosition(baseCanvas);
                 this.Cursor = Cursors.SizeAll;
             }
             else { drg = false; }
-          
+
         }
 
         private void UserControl_MouseMove(object sender, MouseEventArgs e)
         {
             if (drg)
             {
-                var lastXPos = Canvas.GetBottom(this);
-                Canvas.SetLeft(this, Canvas.GetLeft(this) + e.GetPosition(null).X - lastPos.X);
-                Canvas.SetTop(this, Canvas.GetTop(this) +  e.GetPosition(null).Y - lastPos.Y);
-                lastPos = e.GetPosition(null);
+
+                Canvas.SetLeft(this, (Canvas.GetLeft(this) + e.GetPosition(baseCanvas).X - lastPos.X));
+                Canvas.SetTop(this, (Canvas.GetTop(this) + e.GetPosition(baseCanvas).Y - lastPos.Y));
+                foreach (var crv in baseCanvas.Curves)
+                {
+                    crv.UpdatePath();
+                    baseCanvas.RefreshCurves();
+                }
+                lastPos = e.GetPosition(baseCanvas);
+            }
+        }
+
+        private IEnumerable<ConnectorCurve> Curves
+        {
+            get
+            {
+                return baseCanvas.GetNodeCurves(BaseNode);
             }
         }
 
         private void UserControl_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if(e.LeftButton== MouseButtonState.Released) { 
-            if (drg) { drg = false; this.Cursor = Cursors.Arrow; }
+            if (e.LeftButton == MouseButtonState.Released)
+            {
+                if (drg) { drg = false; this.Cursor = Cursors.Arrow; }
             }
         }
 
         private void UserControl_MouseLeave(object sender, MouseEventArgs e)
         {
             UserControl_MouseMove(sender, e);
+        }
+
+        private IEnumerable<OutputSocketView> OutputSocketControls
+        {
+            get
+            {
+                return SocketsCanvas.Children.OfType<OutputSocketView>();
+            }
+        }
+        private IEnumerable<InputSocketView> InputSocketControls => SocketsCanvas.Children.OfType<InputSocketView>();
+
+        public OutputSocketView GetOutputSocketControl(OutputSocket soc)
+        {
+            var a = from b in OutputSocketControls
+                    where b.sock == soc
+                    select b;
+            return a.First();
+        }
+        public InputSocketView GetInputSocketControl(InputSocket soc)
+        {
+            var a = from b in InputSocketControls
+                    where b.sock == soc
+                    select b;
+            return a.First();
+        }
+
+        private void UserControl_MouseEnter(object sender, MouseEventArgs e)
+        {
+            CloseButton.Visibility = Visibility.Visible;
+        }
+
+        private void UserControl_MouseLeave_1(object sender, MouseEventArgs e)
+        {
+            CloseButton.Visibility = Visibility.Hidden;
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            BaseNode.Remove();
         }
     }
 }

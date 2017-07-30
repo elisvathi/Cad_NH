@@ -10,16 +10,46 @@ namespace NH_VI.GraphLogic
     public class NodesGraph
     {
         public delegate void GraphChanged();
+
+        public delegate void NodeDelegate(INode n);
+        public event NodeDelegate OnNodeAdded;
+        public event NodeDelegate OnNodeRemoved;
+        public delegate void ConnectorDelegate(Connector n);
+        public event ConnectorDelegate OnConnectorAdded;
+        public event ConnectorDelegate OnConnectorRemoved;
         public event GraphChanged OnGraphChanged;
         public List<INode> Nodes { get; set; } = new List<INode>();
         public void AddNode(INode n)
         {
             Nodes.Add(n);
             OnGraphChanged?.Invoke();
+            OnNodeAdded?.Invoke(n);
+            n.OnConnectorAdded += ConnectorAdded;
+            n.OnConnectorRemoved += ConnectorRemoved;
+            n.OnNodeRemoved += RemoveNode;
         }
+
+        private void ConnectorRemoved(Connector n)
+        {
+            OnConnectorAdded?.Invoke(n);
+        }
+
+        private void ConnectorAdded(Connector n)
+        {
+            OnConnectorRemoved?.Invoke(n);
+        }
+
         public void RemoveNode(INode n)
         {
-            try { Nodes.Remove(n); OnGraphChanged?.Invoke(); }
+            try
+            {
+                Nodes.Remove(n);
+                OnGraphChanged?.Invoke();
+                OnNodeRemoved?.Invoke(n);
+                n.OnConnectorAdded -= ConnectorAdded;
+                n.OnConnectorRemoved -= ConnectorRemoved;
+                n.OnNodeRemoved -= RemoveNode;
+            }
             catch
             {
                 throw new Exception();

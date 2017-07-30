@@ -5,17 +5,30 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NH_UI.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" MouseLeave="UserControl_MouseLeave" MouseDown="UserControl_MouseDown" MouseMove="UserControl_MouseMove" MouseUp="UserControl_MouseUp">
+             d:DesignHeight="300" d:DesignWidth="300" MouseEnter="UserControl_MouseEnter" MouseLeave="UserControl_MouseLeave_1">
     <Canvas x:Name="NodeCanvas">
-        
-        <Rectangle Fill="Gray" Width="{Binding ActualWidth , ElementName=NodeCanvas}" Height="{Binding ActualHeight, ElementName=NodeCanvas}" RadiusX="20" RadiusY="20"/>
-        <Grid  Width="{Binding ActualWidth , ElementName=NodeCanvas}" Height="{Binding ActualHeight, ElementName=NodeCanvas}">
+        <Button x:Name="CloseButton" Click="CloseButton_Click" Width="50" Height="50" Canvas.Top="-50" Canvas.Right="0" Visibility="Hidden">
+            <Viewbox>
+                <TextBlock>X</TextBlock>
+            </Viewbox>
+        </Button>
+        <Canvas Panel.ZIndex="100" Width="{Binding ActualWidth, ElementName=NodeCanvas}" Height="{Binding ActualHeight, ElementName=NodeCanvas}" x:Name="SocketsCanvas" ></Canvas>
+        <Grid MouseLeave="UserControl_MouseLeave" MouseDown="UserControl_MouseDown" MouseMove="UserControl_MouseMove" MouseUp="UserControl_MouseUp" Width="{Binding ActualWidth , ElementName=NodeCanvas}" Height="{Binding ActualHeight, ElementName=NodeCanvas}">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition Height="70"/>
                 <RowDefinition/>
+              
             </Grid.RowDefinitions>
-            <Canvas Grid.Row="1" Background="DarkGray" x:Name="NameCanvas">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="75"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="75"/>
+            </Grid.ColumnDefinitions>
+            <Rectangle Fill="Gray" Grid.RowSpan="3" Grid.ColumnSpan="3" Width="{Binding ActualWidth , ElementName=NodeCanvas}" Height="{Binding ActualHeight, ElementName=NodeCanvas}" RadiusX="20" RadiusY="20"/>
+
+            <Canvas Grid.Row="0"  Grid.RowSpan="3" Grid.Column="1" Background="DarkGray" x:Name="NameCanvas">
+                
                 <Viewbox  Width="{Binding ActualWidth , ElementName=NameCanvas}" Height="{Binding ActualHeight, ElementName=NameCanvas}" Stretch="Uniform">
                     <TextBlock x:Name="NameText" Text="{Binding Description}"></TextBlock>
                 </Viewbox>
