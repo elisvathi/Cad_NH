@@ -35,7 +35,8 @@ namespace NH_VI.Geometry
             p1.Z = 0;
             var p2 = pt2.Copy();
             p2.Z = 0;
-            var wdif = 200;
+            var wdif = Math.Abs(p2.X - p1.X)/2;
+            if (wdif < 50) { wdif = 50; }
             PVector p1A = new PVector(p1.X + wdif, p1.Y);
             PVector p2A = new PVector(p2.X - wdif, p2.Y);
             var ls = new List<PVector>() { p1, p1A, p2A, p2 };
