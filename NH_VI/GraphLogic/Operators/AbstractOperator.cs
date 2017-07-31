@@ -28,7 +28,8 @@ namespace NH_VI.GraphLogic.Operators
             if (CheckData(dat)) { return GroupData(dat); }
             else
             {
-                throw new Exception();
+                //throw new Exception();
+                return null;
             }
         }
         protected virtual List<IData> GroupData(List<IData> dat)
@@ -124,6 +125,8 @@ namespace NH_VI.GraphLogic.Operators
 
         protected virtual bool CheckData(List<IData> dat)
         {
+            if (dat.Count < MaxNumberOfSockets) return false;
+            foreach(var d in dat) { if (d == null) return false; }
             var test1 = dat.Count >= MinimumNumberOfSockets && dat.Count <= MaxNumberOfSockets;
             var test2 = true;
             for (int i = 0; i < dat.Count; i++)

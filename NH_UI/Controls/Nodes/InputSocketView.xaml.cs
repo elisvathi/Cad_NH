@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CadTest3.GraphLogic;
 
 namespace NH_UI.Controls.Nodes
 {
@@ -36,12 +37,16 @@ namespace NH_UI.Controls.Nodes
             Height = 50;
             Width = 100;
             TooltipDescription.DataContext = this;
-            
+            TooltipDescription.Text = InputInfo;
+            sock.ParentNode.OnNodeDataChanged += UpdateInfo;
         }
 
-       
+        private void UpdateInfo(List<IData> dat)
+        {
+            TooltipDescription.Text = InputInfo;
+        }
 
-        private string InputInfo => sock.Data.DataDescription;
+        private string InputInfo => sock.Data!=null?sock.Data.DataDescription:"Empty";
 
         public DraggableEllipse EllipseHandler => Handler;
 

@@ -21,7 +21,7 @@ namespace NH_VI.GraphLogic.Nodes
         private void Connect(OutputSocket input, InputSocket output, bool replaceEnding = true)
         {
             ending = output;
-            if (IsNotValidReference(output.ParentNode))
+            if (IsNotCircularReference(output.ParentNode))
             {
                 starting = input;
 
@@ -38,6 +38,7 @@ namespace NH_VI.GraphLogic.Nodes
                     ending.Connectors.Add(this);
                     this.OnDataChanged += ending.UpdateData;
                 }
+                starting.UpdateData(starting.Data);
                 ending.ParentNode.InvokeConnectorAdded(this);
                 starting.ParentNode.InvokeConnectorAdded(this);
             }
@@ -48,7 +49,7 @@ namespace NH_VI.GraphLogic.Nodes
             OnDataChanged?.Invoke(data);
         }
 
-        public bool IsNotValidReference(INode s)
+        public bool IsNotCircularReference(INode s)
         {
             var val = true;
             foreach (var os in ending.ParentNode.OutputSockets)
@@ -61,7 +62,7 @@ namespace NH_VI.GraphLogic.Nodes
             }
             var lst = new List<Connector>();
             foreach (var v in ending.ParentNode.OutputSockets) { foreach (var c in v.Connectors) { lst.Add(c); } }
-            foreach (var c in lst) { val &= c.IsNotValidReference(s); }
+            foreach (var c in lst) { val &= c.IsNotCircularReference(s); }
             return true;
         }
 

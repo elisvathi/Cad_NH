@@ -29,7 +29,7 @@ namespace NH_VI.GraphLogic.Nodes
 
         public event DataChanged OnDataChanged;
 
-        internal void UpdateData(IData data)
+        public void UpdateData(IData data)
         {
             OnDataChanged?.Invoke(data);
         }

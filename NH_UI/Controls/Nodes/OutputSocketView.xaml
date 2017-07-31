@@ -6,12 +6,12 @@
              xmlns:local="clr-namespace:NH_UI.Controls.Nodes"
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="100
-             ">
+             " x:Name="_this">
     <UserControl.ToolTip>
         <ToolTip>
             <StackPanel>
                 <TextBlock FontWeight="Bold">Output</TextBlock>
-                <TextBlock x:Name="TooltipDescription" Text="{Binding  ElementName=_this, Path=OutputInfo}"></TextBlock>
+                <TextBlock x:Name="TooltipDescription"></TextBlock>
             </StackPanel>
         </ToolTip>
     </UserControl.ToolTip>
