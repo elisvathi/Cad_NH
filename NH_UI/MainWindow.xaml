@@ -29,7 +29,13 @@
                                 <TextBlock Text="NumberNode"></TextBlock>
                             </Viewbox>
                         </Button>
-                        <Button Grid.Column="2" Click="Button_Click_2"></Button>
+                        <Button Grid.Column="2" Click="Button_Click_2">
+                            <Viewbox>
+                                <TextBlock>
+                                    SubtractNode
+                                </TextBlock>
+                            </Viewbox>
+                        </Button>
                     </Grid>
                 </TabItem>
                 <TabItem Header="Math">

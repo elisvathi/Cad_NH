@@ -15,6 +15,9 @@ namespace NH_VI.GraphLogic.Operators.BooleanOperators
     public class BooleanOperator : AbstractOperator
     {
         public override List<Type> InputTypes => new List<Type>() {typeof(PBoolean), typeof(PBoolean) };
+        public BooleanOperator(BoolOperationType t) {
+            BType = t;
+        }
         public BoolOperationType BType { get; set; } = BoolOperationType.And;
         public override bool TreeOperator => false;
 

@@ -1,19 +1,16 @@
-﻿using System;
+﻿using CadTest3.GraphLogic;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CadTest3.GraphLogic;
 
 namespace NH_VI.GraphLogic.Nodes
 {
     public class Connector
     {
-        InputSocket ending;
-        OutputSocket starting;
+        private InputSocket ending;
+        private OutputSocket starting;
 
         public InputSocket Ending { get => ending; }
         public OutputSocket Starting { get => starting; }
+
         public event DataChanged OnDataChanged;
 
         public Connector(OutputSocket starting, InputSocket ending, bool replaceEnding = true)
@@ -21,27 +18,28 @@ namespace NH_VI.GraphLogic.Nodes
             Connect(starting, ending, replaceEnding);
         }
 
-        void Connect(OutputSocket input, InputSocket output, bool replaceEnding = true)
+        private void Connect(OutputSocket input, InputSocket output, bool replaceEnding = true)
         {
             ending = output;
-            if (IsNotValidReference(output.ParentNode)) {
-            starting = input;
-           
-            starting.Connectors.Add(this);
-            starting.OnDataChanged += UpdateData;
-            if (replaceEnding)
+            if (IsNotValidReference(output.ParentNode))
             {
-                //foreach(var c in ending.Connectors) { c.Disconnect(); }
+                starting = input;
 
-                for (int i = ending.Connectors.Count - 1; i >= 0; i--)
+                starting.Connectors.Add(this);
+                starting.OnDataChanged += UpdateData;
+                if (replaceEnding)
                 {
-                    ending.Connectors[i].Disconnect();
+                    //foreach(var c in ending.Connectors) { c.Disconnect(); }
+
+                    for (int i = ending.Connectors.Count - 1; i >= 0; i--)
+                    {
+                        ending.Connectors[i].Disconnect();
+                    }
+                    ending.Connectors.Add(this);
+                    this.OnDataChanged += ending.UpdateData;
                 }
-                ending.Connectors.Add(this);
-                this.OnDataChanged += ending.UpdateData;
-            }
-            ending.ParentNode.InvokeConnectorAdded(this);
-            starting.ParentNode.InvokeConnectorAdded(this);
+                ending.ParentNode.InvokeConnectorAdded(this);
+                starting.ParentNode.InvokeConnectorAdded(this);
             }
         }
 
@@ -50,12 +48,12 @@ namespace NH_VI.GraphLogic.Nodes
             OnDataChanged?.Invoke(data);
         }
 
-       public bool IsNotValidReference(INode s)
+        public bool IsNotValidReference(INode s)
         {
             var val = true;
             foreach (var os in ending.ParentNode.OutputSockets)
             {
-                foreach(var c in os.Connectors)
+                foreach (var c in os.Connectors)
                 {
                     val &= (c.ending.ParentNode != s);
                     if (val == false) return false;
@@ -63,7 +61,7 @@ namespace NH_VI.GraphLogic.Nodes
             }
             var lst = new List<Connector>();
             foreach (var v in ending.ParentNode.OutputSockets) { foreach (var c in v.Connectors) { lst.Add(c); } }
-            foreach(var c in lst) { val &= c.IsNotValidReference(s); }
+            foreach (var c in lst) { val &= c.IsNotValidReference(s); }
             return true;
         }
 
@@ -77,6 +75,7 @@ namespace NH_VI.GraphLogic.Nodes
             OnDataChanged -= ending.UpdateData;
             starting.OnDataChanged -= UpdateData;
         }
+
         public override bool Equals(object obj)
         {
             if (!(obj is Connector)) { return false; }
