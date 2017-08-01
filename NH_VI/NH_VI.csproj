@@ -68,6 +68,7 @@
     <Compile Include="GraphLogic\Nodes\NumberNode\DivideNode.cs" />
     <Compile Include="GraphLogic\Nodes\NumberNode\MultiplyNode.cs" />
     <Compile Include="GraphLogic\Nodes\NumberNode\NumberInputNode.cs" />
+    <Compile Include="GraphLogic\Nodes\NumberNode\NumberSeries\CreateSeriesNode.cs" />
     <Compile Include="GraphLogic\Nodes\NumberNode\SubtractNode.cs" />
     <Compile Include="GraphLogic\Nodes\OutputSocket.cs" />
     <Compile Include="GraphLogic\Operators\BooleanOperators\BooleanOperator.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="GraphLogic\Operators\NumberOperators\GreaterThanEquals.cs" />
     <Compile Include="GraphLogic\Operators\NumberOperators\GreaterThanOperator.cs" />
     <Compile Include="GraphLogic\Operators\NumberOperators\MultiplyOperator.cs" />
+    <Compile Include="GraphLogic\Operators\NumberOperators\Series\CreateSeriesOperator.cs" />
     <Compile Include="GraphLogic\Operators\NumberOperators\SmallerThanEquals.cs" />
     <Compile Include="GraphLogic\Operators\NumberOperators\SmallerThanOperator.cs" />
     <Compile Include="GraphLogic\Operators\NumberOperators\SubtractOperator.cs" />

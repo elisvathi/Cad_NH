@@ -38,13 +38,18 @@ namespace NH_UI.Controls.Nodes
             Width = 100;
             TooltipDescription.DataContext = this;
             TooltipDescription.Text = InputInfo;
-            sock.ParentNode.OnNodeDataChanged += UpdateInfo;
+            sock.OnDataChanged+= UpdateInfo;
         }
 
-        private void UpdateInfo(List<IData> dat)
+        private void UpdateInfo(IData data)
         {
             TooltipDescription.Text = InputInfo;
         }
+
+        //private void UpdateInfo(List<IData> dat)
+        //{
+        //    TooltipDescription.Text = InputInfo;
+        //}
 
         private string InputInfo => sock.Data!=null?sock.Data.DataDescription:"Empty";
 

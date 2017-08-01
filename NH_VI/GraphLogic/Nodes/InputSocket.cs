@@ -31,7 +31,9 @@ namespace NH_VI.GraphLogic.Nodes
 
         public void UpdateData(IData data)
         {
+            Data = data;
             OnDataChanged?.Invoke(data);
+           
         }
         public void ConnectTo(OutputSocket s, bool repl = true)
         {
