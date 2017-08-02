@@ -44,8 +44,10 @@ namespace NH_UI.Factory
         {
             get
             {
-                var b = new ButtonCategory("Math");
-                b.SubCategories = new List<SubCategory>() { MathOps, SeriesOps };
+                var b = new ButtonCategory("Math")
+                {
+                    SubCategories = new List<SubCategory>() { MathOps, SeriesOps }
+                };
                 return b;
             }
         }
@@ -53,8 +55,10 @@ namespace NH_UI.Factory
         {
             get
             {
-                var b = new ButtonCategory("Geometry");
-                b.SubCategories = new List<SubCategory>() { VectorOps };
+                var b = new ButtonCategory("Geometry")
+                {
+                    SubCategories = new List<SubCategory>() { VectorOps }
+                };
                 return b;
             }
         }

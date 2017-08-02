@@ -30,12 +30,14 @@ namespace NH_UI
 
         public INode GetNode()
         {
-            return (INode)manager.ActiveKernel.GetService(nodeType);
+           var a = (INode)manager.ActiveKernel.GetService(nodeType);
+            return a;
         }
 
         public string GetDescription()
         {
-            return GetNode().Description;
+            var a = GetNode().Description;
+            return a;
         }
         public void AddToGraph(NodesGraph g) {
             g.AddNode(GetNode());
