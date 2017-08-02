@@ -1,4 +1,6 @@
 ﻿using NH_UI.Controls;
+using NH_UI.Controls.Ribbon;
+using NH_UI.Factory;
 using NH_UI.Modules;
 using NH_VI.GraphLogic;
 using NH_VI.GraphLogic.Nodes.Geometry_Nodes;
@@ -20,11 +22,13 @@ namespace NH_UI
         private ZoomBorder Zoomable => man.ActiveKernel.Get<ZoomBorder>();
         private MainCanvas Canvas => man.ActiveKernel.Get<MainCanvas>();
         public NodesGraph Grp => man.ActiveKernel.Get<NodesGraph>();
+        private NodeFactory Factory => man.AppKernel.Get<NodeFactory>();
 
         private void RefreshWindow()
         {
             gContGrid.Children.Add(Zoomable);
             Grid.SetRow(Zoomable, 0);
+            RibbonSpace.Children.Add(new FullRibbon(Factory));
         }
 
         public MainWindow(ContextManager mg)
@@ -35,19 +39,6 @@ namespace NH_UI
             RefreshWindow();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Grp.AddNode(new AddNode());
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            Grp.AddNode(new NumberInputNode());
-        }
-
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            Grp.AddNode(new ConstructVectorNode());
-        }
+      
     }
 }

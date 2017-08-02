@@ -1,4 +1,5 @@
-﻿using Ninject;
+﻿using NH_UI.Factory;
+using Ninject;
 using Ninject.Modules;
 
 namespace NH_UI.Modules
@@ -11,6 +12,7 @@ namespace NH_UI.Modules
             Bind<ContextManager>().ToSelf().InSingletonScope();
             Bind<MainWindow>().ToSelf().InSingletonScope();
             Bind<App>().ToSelf().InSingletonScope();
+            
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using CadTest3.GraphLogic;
 using NH_VI.DataTypes.Abstract;
 using NH_VI.DataTypes.Numeric;
+using NH_VI.GraphLogic.Nodes;
 using NH_VI.GraphLogic.Nodes.NumberNode;
 using NH_VI.GraphLogic.Operators;
 using NH_VI.GraphLogic.Operators.NumberOperators;
@@ -21,8 +22,15 @@ namespace Testings
             //CrossRefTree();
             //OperatorTest();
             //PathTest();
-            GraphTest();
+            //GraphTest();
+            TypeTest();
             Console.Read();
+        }
+
+        private static void TypeTest()
+        {
+            var n = typeof(AddNode);
+            if(n.GetInterfaces().Contains(typeof(INode))) { Console.WriteLine("TRUE"); } else { Console.WriteLine("False"); }
         }
 
         static void CrossRefTree()

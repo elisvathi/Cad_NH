@@ -11,11 +11,12 @@ namespace NH_UI.Modules
     {
         public IKernel AppKernel { get; set; }
         public List<IKernel> OpenKernels { get; set; } = new List<IKernel>();
-
+       
         private int ActiveKernelIndex { get; set; } = -1;
 
         public ContextManager([Named("AppKernel")] IKernel kern)
         {
+            
             AppKernel = kern;
             AddNewKernel();
 

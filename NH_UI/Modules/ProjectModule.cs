@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Ninject;
 using NH_UI.Controls;
 using NH_VI.GraphLogic;
+using NH_UI.Factory;
 
 namespace NH_UI.Modules
 {
@@ -23,6 +24,10 @@ namespace NH_UI.Modules
             Bind<NodesGraph>().ToSelf().InSingletonScope();
 
             Bind<NodeBaseControl>().ToSelf().InTransientScope();
+           
+            Bind<NodeFactory>().ToSelf().InSingletonScope();
+            Bind(NodeTypes).ToSelf().InTransientScope();
         }
+        Type[] NodeTypes => this.Kernel.Get<NodeFactory>().GetAvailableTypes;
     }
 }
