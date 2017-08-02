@@ -1,6 +1,7 @@
 ﻿using NH_UI.Controls;
 using NH_UI.Modules;
 using NH_VI.GraphLogic;
+using NH_VI.GraphLogic.Nodes.Geometry_Nodes;
 using NH_VI.GraphLogic.Nodes.NumberNode;
 using NH_VI.GraphLogic.Nodes.NumberNode.NumberSeries;
 using Ninject;
@@ -46,7 +47,7 @@ namespace NH_UI
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            Grp.AddNode(new CreateSeriesNode());
+            Grp.AddNode(new ConstructVectorNode());
         }
     }
 }

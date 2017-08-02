@@ -15,6 +15,8 @@ using System.Windows.Shapes;
 using System.Windows.Input;
 using System.Windows;
 using NH_VI.Geometry;
+using NH_VI.GraphLogic.Nodes.NumberNode;
+using NH_UI.Controls.Nodes.CustomNodes;
 
 namespace NH_UI.Controls
 {
@@ -106,7 +108,15 @@ namespace NH_UI.Controls
         {
             if (!HasNode(n))
             {
-                var nn = new NodeBaseControl(_manager, _manager.ActiveKernel.Get<ZoomBorder>(), n);
+                
+                NodeBaseControl nn;
+                if (n is NumberInputNode) {
+                    nn = new NumberSlider(_manager, _manager.ActiveKernel.Get<ZoomBorder>(), n);
+                }
+                else
+                {
+                    nn = new NodeBaseControl(_manager, _manager.ActiveKernel.Get<ZoomBorder>(), n);
+                }
                 NodesCanvas.Children.Add(nn);
                 nn.OnSocketDragStart += SocketDragStarted;
             }

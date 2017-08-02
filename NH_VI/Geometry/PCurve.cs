@@ -31,9 +31,9 @@ namespace NH_VI.Geometry
 
         public static PCurve GetNodeCurve(PVector pt1, PVector pt2)
         {
-            var p1 = pt1.Copy();
+            var p1 = pt1.CopyVector();
             p1.Z = 0;
-            var p2 = pt2.Copy();
+            var p2 = pt2.CopyVector();
             p2.Z = 0;
             var wdif = Math.Abs(p2.X - p1.X)/2;
             if (wdif < 50) { wdif = 50; }

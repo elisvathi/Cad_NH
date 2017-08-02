@@ -59,6 +59,8 @@
     <Compile Include="GraphLogic\Nodes\AbstractNode.cs" />
     <Compile Include="GraphLogic\Nodes\Connector.cs" />
     <Compile Include="GraphLogic\Nodes\ExternalSocket.cs" />
+    <Compile Include="GraphLogic\Nodes\Geometry Nodes\ConstructVectorNode.cs" />
+    <Compile Include="GraphLogic\Nodes\Geometry Nodes\DeconstructVectorNode.cs" />
     <Compile Include="GraphLogic\Nodes\INode.cs" />
     <Compile Include="GraphLogic\Nodes\InputSocket.cs" />
     <Compile Include="GraphLogic\Nodes\ISocket.cs" />
@@ -73,8 +75,10 @@
     <Compile Include="GraphLogic\Nodes\OutputSocket.cs" />
     <Compile Include="GraphLogic\Operators\BooleanOperators\BooleanOperator.cs" />
     <Compile Include="GraphLogic\Operators\BooleanOperators\BooleanOps.cs" />
+    <Compile Include="GraphLogic\Operators\GeometryOperators\BuildVectorOperator.cs" />
     <Compile Include="GraphLogic\Operators\ExternalOperator.cs" />
     <Compile Include="GraphLogic\Operators\ExternalOperators\ExternalNumberOperator.cs" />
+    <Compile Include="GraphLogic\Operators\GeometryOperators\DeconstructVectorOperation.cs" />
     <Compile Include="GraphLogic\Operators\NumberOperators\AbstractNumberOperator.cs" />
     <Compile Include="GraphLogic\Operators\AbstractOperator.cs" />
     <Compile Include="GraphLogic\Operators\NumberOperators\AddOperator.cs" />

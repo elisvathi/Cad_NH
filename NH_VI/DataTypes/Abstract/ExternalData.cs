@@ -23,7 +23,7 @@ namespace NH_VI.DataTypes.Abstract
         {
             return "Exernal :" + value.ToString();
         }
-        internal IExternal Value { get => value; set => this.value = value; }
+        public IExternal Value { get => value; set => this.value = value; }
 
         IExternal value;
         public override IData Copy()

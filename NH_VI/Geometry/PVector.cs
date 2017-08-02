@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CadTest3.GraphLogic;
+using NH_VI.GraphLogic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +9,7 @@ using System.Windows;
 
 namespace NH_VI.Geometry
 {
-    public class PVector
+    public class PVector : AbstractData
     {
         public double X { get; set; }
         public double Y { get; set; }
@@ -17,10 +19,10 @@ namespace NH_VI.Geometry
         {
             X = x; Y = y; Z = z;
         }
-        
-        public PVector(System.Windows.Point p):this(p.X, p.Y)
+
+        public PVector(System.Windows.Point p) : this(p.X, p.Y)
         {
-           
+
         }
         public Point GetPoint()
         {
@@ -72,7 +74,8 @@ namespace NH_VI.Geometry
         }
         public PVector ProjectTo(PVector vec)
         {
-            var v = vec.Copy();
+            var v = vec.CopyVector();
+            v.Normalize();
             v.Mult(Dot(vec));
             return v;
         }
@@ -100,18 +103,18 @@ namespace NH_VI.Geometry
 
         public static PVector Rotate3D(PVector vector, PVector axis, double theta)
         {
-            var vec = axis.Copy();
+            var vec = axis.CopyVector();
             vec.Normalize();
-            double scalar_1 = (1 - Math.Cos(theta))*(Dot(vector, vec));
+            double scalar_1 = (1 - Math.Cos(theta)) * (Dot(vector, vec));
             double scalar_2 = Math.Cos(theta);
             double scalar_3 = Math.Sin(theta);
-            PVector norm = vec.Copy();
-            PVector tv = vector.Copy();
+            PVector norm = vec.CopyVector();
+            PVector tv = vector.CopyVector();
             PVector crs = Cross(norm, tv);
             norm.Mult(scalar_1);
             tv.Mult(scalar_2);
             crs.Mult(scalar_3);
-            var retVal = norm.Copy();
+            var retVal = norm.CopyVector();
             retVal.Add(tv);
             retVal.Add(crs);
             return retVal;
@@ -132,7 +135,7 @@ namespace NH_VI.Geometry
             return x1 * y2 - x2 * y1;
         }
 
-        public PVector Copy()
+        public PVector CopyVector()
         {
             return new PVector(X, Y, Z);
         }
@@ -148,15 +151,24 @@ namespace NH_VI.Geometry
 
         public static PVector Add(PVector v1, PVector v2)
         {
-            var v = v1.Copy();
+            var v = v1.CopyVector();
             v1.Add(v2);
             return v1;
         }
         public static PVector Sub(PVector v1, PVector v2)
         {
-            var v = v1.Copy();
+            var v = v1.CopyVector();
             v.Sub(v2);
             return v;
+        }
+
+        public override IData Copy()
+        {
+            return CopyVector();
+        }
+        public override string ToString()
+        {
+            return "Vector (" + X + ", " + Y + ", " + Z + " )";
         }
     }
 }
