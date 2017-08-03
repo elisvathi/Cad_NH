@@ -20,7 +20,7 @@ namespace NH_VI.GraphLogic.Nodes
 
         private void NodeChanged(List<IData> dat)
         {
-            if (dat!=null)
+            if (dat!=null && dat.Count>0)
             {
                 Data = dat[Index];
                 UpdateData(dat[Index]); 

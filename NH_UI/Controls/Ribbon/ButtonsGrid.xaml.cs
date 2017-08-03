@@ -30,8 +30,9 @@ namespace NH_UI
         public ButtonsGrid(SubCategory buttonList)
         {
             CommandList = buttonList;
-
+            
             InitializeComponent();
+            Width = ((Height - bottomHeight) / numRows) * NumColumns;
             PlaceButtons();
         }
 
@@ -50,11 +51,17 @@ namespace NH_UI
 
         private void PlaceButtons()
         {
+           
             for (int i = 0; i < NumColumns; i++)
             {
                 ButtonsGridCont.ColumnDefinitions.Add(new ColumnDefinition());
             }
             var l = new Label();
+            var vbb = new Viewbox();
+            var tb = new TextBlock();
+            tb.Text = CommandList.Name;
+            vbb.Child = tb;
+            l.Content = vbb;
             Grid.SetRow(l, 2);
             Grid.SetColumnSpan(l, NumColumns);
             ButtonsGridCont.Children.Add(l);
@@ -63,6 +70,7 @@ namespace NH_UI
             foreach (var c in CommandList.Buttons)
             {
                 var b = new Button();
+               
                 b.Click += c.Clicked;
                 var vb = new Viewbox();
                 var t = new TextBlock()
@@ -73,6 +81,7 @@ namespace NH_UI
                 b.Content = vb;
                 Grid.SetRow(b, gr);
                 Grid.SetColumn(b, gc);
+                ButtonsGridCont.Children.Add(b);
                
                 gc++;
                

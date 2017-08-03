@@ -9,7 +9,7 @@ namespace NH_VI.GraphLogic.Nodes.NumberNode
 {
     public class DivideNode : AbstractNode
     {
-        public DivideNode(IOperator op) : base(op)
+        public DivideNode() : base(new DivideOperator())
         {
         }
 

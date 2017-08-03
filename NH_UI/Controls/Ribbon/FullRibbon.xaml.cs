@@ -26,17 +26,19 @@ namespace NH_UI.Controls.Ribbon
         {
             factory = fact;
             InitializeComponent();
-            var t = new TabControl();
-            foreach( var cat in factory.Categories)
+
+            foreach (var cat in factory.Categories)
             {
                 var item = new TabItem()
                 {
-                    Content = new CategoryView(cat)
+                    Content = new CategoryView(cat),
+                    Header = cat.CategoryName,
+                   
                 };
-                t.Items.Add(item);
+                tabContainer.Items.Add(item);
             }
-            MainGrid.Children.Add(t);
-           
+
+
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using NH_UI.Modules;
+using NH_VI.GraphLogic.Nodes.BooleanNodes;
 using NH_VI.GraphLogic.Nodes.Geometry_Nodes;
 using NH_VI.GraphLogic.Nodes.NumberNode;
 using NH_VI.GraphLogic.Nodes.NumberNode.Comparsions;
@@ -21,7 +22,7 @@ namespace NH_UI.Factory
             manager = mg;
         }
 
-        public List<ButtonCategory> Categories => new List<ButtonCategory>() { MathCat, GeometryCat };
+        public List<ButtonCategory> Categories => new List<ButtonCategory>() { MathCat, GeometryCat, BoolCat };
         public IEnumerable<Type> GetTypes
         {
             get
@@ -40,13 +41,47 @@ namespace NH_UI.Factory
         }
         public Type[] GetAvailableTypes => GetTypes.ToArray();
 
+        public ButtonCategory BoolCat
+        {
+            get
+            {
+                var b = new ButtonCategory("Boolean")
+                {
+                    SubCategories = new List<SubCategory>() { BoolOps }
+                };
+                return b;
+            }
+        }
+        public SubCategory BoolOps
+        {
+            get
+            {
+                var b = new SubCategory("Opeartions", manager)
+                {
+                    Types = new List<Type>()
+                    {
+                        typeof(AndNode),
+                        typeof(OrNode),
+                        typeof(NotNode),
+                        typeof(NandNode),
+                        typeof(NorNode),
+                        typeof(XorNode),
+                        typeof(XNorNode)
+                    }
+
+                };
+                return b;
+
+            }
+        }
+
         public ButtonCategory MathCat
         {
             get
             {
                 var b = new ButtonCategory("Math")
                 {
-                    SubCategories = new List<SubCategory>() { MathOps, SeriesOps }
+                    SubCategories = new List<SubCategory>() { MathOps, SeriesOps, MathComp }
                 };
                 return b;
             }
@@ -76,9 +111,25 @@ namespace NH_UI.Factory
                     typeof(SubtractNode),
                     typeof(MultiplyNode),
                     typeof(DivideNode),
-                    typeof(BiggerThanNode),
-                    typeof(SmallerThanNode)
+                   
                 }
+                };
+                return retval;
+            }
+        }
+        public SubCategory MathComp
+        {
+            get
+            {
+                var retval = new SubCategory("Comparsions", manager)
+                {
+                    Types = new List<Type>()
+                    {
+                        typeof(BiggerThanNode),
+                        typeof(SmallerThanNode),
+                        typeof(BiggerThanEqualsNode),
+                        typeof(SmallerThanEqualsNode)
+                    }
                 };
                 return retval;
             }

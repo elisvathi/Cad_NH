@@ -47,6 +47,7 @@
     <Compile Include="DataTypes\Abstract\ExternalNumber.cs" />
     <Compile Include="DataTypes\Abstract\IExternal.cs" />
     <Compile Include="DataTypes\Boolean\PBoolean.cs" />
+    <Compile Include="DataTypes\Numeric\PDomain.cs" />
     <Compile Include="DataTypes\Numeric\PNumber.cs" />
     <Compile Include="Geometry\PCurve.cs" />
     <Compile Include="Geometry\PSurface.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="GraphLogic\NodesGraph.cs" />
     <Compile Include="GraphLogic\Nodes\AbstractExternalNode.cs" />
     <Compile Include="GraphLogic\Nodes\AbstractNode.cs" />
+    <Compile Include="GraphLogic\Nodes\BooleanNodes\AndNode.cs" />
     <Compile Include="GraphLogic\Nodes\Connector.cs" />
     <Compile Include="GraphLogic\Nodes\ExternalSocket.cs" />
     <Compile Include="GraphLogic\Nodes\Geometry Nodes\ConstructVectorNode.cs" />
@@ -65,7 +67,9 @@
     <Compile Include="GraphLogic\Nodes\InputSocket.cs" />
     <Compile Include="GraphLogic\Nodes\ISocket.cs" />
     <Compile Include="GraphLogic\Nodes\NumberNode\AddNode.cs" />
+    <Compile Include="GraphLogic\Nodes\NumberNode\Comparsions\BiggerThanEqualsNode.cs" />
     <Compile Include="GraphLogic\Nodes\NumberNode\Comparsions\BiggerThanNode.cs" />
+    <Compile Include="GraphLogic\Nodes\NumberNode\Comparsions\SmallerThanEqualsNode.cs" />
     <Compile Include="GraphLogic\Nodes\NumberNode\Comparsions\SmallerThanNode.cs" />
     <Compile Include="GraphLogic\Nodes\NumberNode\DivideNode.cs" />
     <Compile Include="GraphLogic\Nodes\NumberNode\MultiplyNode.cs" />

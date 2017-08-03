@@ -10,7 +10,7 @@ namespace NH_VI.GraphLogic.Operators.BooleanOperators
 {
     public enum BoolOperationType
     {
-        And, Or, Not, Xor, Nand, Non, XNor
+        And, Or, Not, Xor, Nand, Nor, XNor
     }
     public class BooleanOperator : AbstractOperator
     {

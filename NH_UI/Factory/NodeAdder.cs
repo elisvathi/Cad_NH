@@ -1,6 +1,7 @@
 ﻿using NH_UI.Modules;
 using NH_VI.GraphLogic;
 using NH_VI.GraphLogic.Nodes;
+using NH_VI.GraphLogic.Nodes.NumberNode;
 using Ninject;
 using System;
 using System.Collections.Generic;
@@ -30,8 +31,8 @@ namespace NH_UI
 
         public INode GetNode()
         {
-           var a = (INode)manager.ActiveKernel.GetService(nodeType);
-            return a;
+            var a = manager.ActiveKernel.Get(nodeType);
+            return a as INode;
         }
 
         public string GetDescription()

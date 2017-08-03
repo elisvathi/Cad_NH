@@ -23,8 +23,20 @@ namespace NH_VI.GraphLogic.Operators.GeometryOperators
 
         protected override List<IData> OperateSimple(List<IData> dat)
         {
+            if (dat.Count > 0) { 
             var v = dat[0] as PVector;
+                if (v != null) {
             return new List<IData>() { new PNumber(v.X), new PNumber(v.Y), new PNumber(v.Z) };
+                }
+                else
+                {
+                    return new List<IData>();
+                }
+            }
+            else
+            {
+                return new List<IData>();
+            }
         }
     }
 }

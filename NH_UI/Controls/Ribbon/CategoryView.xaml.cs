@@ -27,6 +27,8 @@ namespace NH_UI.Controls.Ribbon
             category = cat;
             InitializeComponent();
             BuildComponent();
+          
+            Background = Brushes.Purple;
         }
         public string CategoryName => category.CategoryName;
         private void BuildComponent()
@@ -34,7 +36,13 @@ namespace NH_UI.Controls.Ribbon
            for(int i =0;i< NumColumns; i++)
             {
                 MainGrid.ColumnDefinitions.Add(new ColumnDefinition());
-                MainGrid.Children.Add(new ButtonsGrid(category.SubCategories[i]));
+               
+            }
+           for(int i = 0;i< NumColumns; i++)
+            {
+                var b = new ButtonsGrid(category.SubCategories[i]);
+                Grid.SetColumn(b, i);
+                MainGrid.Children.Add(b);
             }
 
         }

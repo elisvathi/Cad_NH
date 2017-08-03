@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using CadTest3.GraphLogic;
 using NH_VI.GraphLogic.Operators;
 using static NH_VI.GraphLogic.NodesGraph;
+using NH_VI.GraphLogic.Operators.BooleanOperators;
+using NH_VI.DataTypes.Boolean;
 
 namespace NH_VI.GraphLogic.Nodes
 {
@@ -22,11 +24,21 @@ namespace NH_VI.GraphLogic.Nodes
 
         private void UpdateSockets()
         {
-           foreach(var t in _operator.InputTypes)
+            if (_operator is BooleanOperator)
             {
-                AddInputSocket(new InputSocket(t, this));
+                for (var i = 0; i < (_operator as BooleanOperator).MinimumNumberOfSockets; i++)
+                {
+                    AddInputSocket(new InputSocket(typeof(PBoolean), this));
+                }
             }
-           foreach(var t in _operator.OutputTypes)
+            else
+            {
+                foreach (var t in _operator.InputTypes)
+                {
+                    AddInputSocket(new InputSocket(t, this));
+                }
+            }
+            foreach (var t in _operator.OutputTypes)
             {
                 AddOutputSocket(new OutputSocket(t, this));
             }
@@ -52,15 +64,16 @@ namespace NH_VI.GraphLogic.Nodes
         protected virtual void Recalculate(IData data)
         {
             var list = new List<IData>();
-            foreach(var i in InputSockets)
+            foreach (var i in InputSockets)
             {
                 list.Add(i.Data);
             }
-          var output =   Operator.ProcessData(list);
+            var output = Operator.ProcessData(list);
             //OnNodeDataChanged?.Invoke(output);
             InvokeNodeChangedEvent(output);
         }
-        protected virtual void InvokeNodeChangedEvent(List<IData> dat) {
+        protected virtual void InvokeNodeChangedEvent(List<IData> dat)
+        {
             OnNodeDataChanged?.Invoke(dat);
         }
 
@@ -80,7 +93,7 @@ namespace NH_VI.GraphLogic.Nodes
             //{
             //    c.Disconnect();
             //}
-            for(int i = Connectors.Count() - 1; i >= 0; i--)
+            for (int i = Connectors.Count() - 1; i >= 0; i--)
             {
                 Connectors.ElementAt(i).Disconnect();
             }
@@ -91,7 +104,8 @@ namespace NH_VI.GraphLogic.Nodes
         {
             get
             {
-                foreach(var inp in InputSockets) {
+                foreach (var inp in InputSockets)
+                {
                     foreach (var c in inp.Connectors)
                     {
                         yield return c;
@@ -99,7 +113,7 @@ namespace NH_VI.GraphLogic.Nodes
                 }
                 foreach (var outp in OutputSockets)
                 {
-                    foreach(var c in outp.Connectors)
+                    foreach (var c in outp.Connectors)
                     {
                         yield return c;
                     }
